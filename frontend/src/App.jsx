@@ -7,6 +7,7 @@ import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage";
 import AllDoctorsPage from "./pages/AllDoctorsPage";
 import Navbar from "./components/Navbar";
+import MyAppointmentsPage from "./pages/MyAppointmentsPage";
 
 export const App = () => {
   return (
@@ -19,6 +20,7 @@ export const App = () => {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/alldoctors" element={<AllDoctorsPage />} />
+        <Route path="/myappointments" element={<MyAppointmentsPage />} />
       </Routes>
     </div>
   );
