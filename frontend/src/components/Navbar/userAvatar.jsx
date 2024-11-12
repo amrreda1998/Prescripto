@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { assets } from "../assets/assets";
-import { useToken } from "../context/tokenContext";
+import { assets } from "./../../assets/assets";
+import { useToken } from "../../context/tokenContext";
 
 const UserAvatar = () => {
   const navigate = useNavigate();

@@ -1,7 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { assets } from "./../assets/assets";
+import { assets } from "../../assets/assets";
+import { useToken } from "../../context/tokenContext";
 import UserAvatar from "./userAvatar";
-import { useToken } from "../context/tokenContext";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -58,7 +58,7 @@ const Navbar = () => {
 
       {/* Create account button || user avatar */}
       {token ? (
-        <UserAvatar/>
+        <UserAvatar />
       ) : (
         <button
           className="bg-[#5F6FFF] py-3 px-4 text-white rounded-full font-medium"

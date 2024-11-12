@@ -6,7 +6,7 @@ import ContactsPage from "./pages/ContactsPage";
 import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage";
 import AllDoctorsPage from "./pages/AllDoctorsPage";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/Navbar/Navbar";
 import MyAppointmentsPage from "./pages/MyAppointmentsPage";
 
 export const App = () => {
