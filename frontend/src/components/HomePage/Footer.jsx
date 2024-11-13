@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <>
-      <div className="grid md:grid-cols-4 md:gap-28  text-center mb-5">
+    <div>
+      <div className="grid md:grid-cols-4 md:gap-28  text-center mb-5 ">
         {/* Left Section */}
         <div className="md:col-span-2 flex flex-col items-center md:items-start">
           <img
@@ -52,13 +52,13 @@ const Footer = () => {
           <h4 className="pb-5 font-bold text-lg">GET IN TOUCH</h4>
           <ul className="space-y-2 ">
             <li>
-              <a href="tel:+201012501718" className="text-sm">
-                +201012501718
+              <a href="tel:+20101250171812314" className="text-sm">
+                +2010125123141411
               </a>
             </li>
             <li>
               <a href="amr.redab1398@gmail.com" className="text-sm">
-                amr.redab1398@gmail.com
+                AmrReda@CompanyEmail.com
               </a>
             </li>
           </ul>
@@ -70,7 +70,7 @@ const Footer = () => {
       <div className="grid-cols-4 text-center mb-3">
         <span>Copyright © 2024 Amr Reda - All Right Reserved.</span>
       </div>
-    </>
+    </div>
   );
 };
 

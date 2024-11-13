@@ -6,7 +6,8 @@ import contact_image from "./contact_image.png";
 import about_image from "./about_image.png";
 import logo from "./logo.svg";
 import dropdown_icon from "./dropdown_icon.svg";
-import menu_icon from "./menu_icon.svg";
+
+import menu_icon from "./menu.png"
 import cross_icon from "./cross_icon.png";
 import chats_icon from "./chats_icon.svg";
 import verified_icon from "./verified_icon.svg";
