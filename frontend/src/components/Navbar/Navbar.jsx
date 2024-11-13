@@ -130,7 +130,7 @@ const Navbar = () => {
       {!token ? (
         <button
           className="bg-[#5F6FFF] py-3 px-4 text-white rounded-full font-medium"
-          onClick={() => navigate("/login")}
+          onClick={() => navigate("/signup")}
         >
           Create Account
         </button>
