@@ -1,6 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import { assets } from "./../../../assets/assets";
 
 const BannerSection = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="relative flex items-center justify-between bg-[#5F6FFF] text-white rounded px-4 h-72 mx-5 my-10 overflow-visible">
       {/* Left side */}
@@ -10,7 +13,12 @@ const BannerSection = () => {
           <br />
           With 100+ Trusted Doctors
         </p>
-        <button className="flex items-center md:text-lg text-xs bg-white text-black font-semibold py-3 px-4 rounded-full mt-4 hover:bg-gray-200 h-11">
+        <button
+          className="flex items-center md:text-lg text-xs bg-white text-black font-semibold py-3 px-4 rounded-full mt-4 hover:bg-gray-200 h-11"
+          onClick={() => {
+            navigate("./signup");
+          }}
+        >
           Create An Account
           <img
             src={assets.arrow_icon}
@@ -22,7 +30,11 @@ const BannerSection = () => {
 
       {/* Right side */}
       <div className="hidden lg:block w-72 absolute bottom-0 right-14">
-        <img src={assets.appointment_img} alt="Banner Image" className="w-full h-auto" />
+        <img
+          src={assets.appointment_img}
+          alt="Banner Image"
+          className="w-full h-auto"
+        />
       </div>
     </div>
   );

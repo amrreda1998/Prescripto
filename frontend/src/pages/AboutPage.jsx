@@ -15,7 +15,7 @@ const AboutPage = () => {
           <img
             src={assets.about_image}
             alt="About Prescripto"
-            className="md:w-1/3 md:h-auto mx-auto w-72 object-cover"
+            className="md:w-1/3 md:h-auto mx-auto w-72 object-cover rounded shadow-lg shadow-gray-400"
           />
 
           {/* Text Section */}

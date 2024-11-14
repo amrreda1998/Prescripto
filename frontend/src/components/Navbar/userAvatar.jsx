@@ -34,7 +34,7 @@ const UserAvatar = () => {
 
       {/* Dropdown menu */}
       {isDropdownOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md">
+        <div className="absolute right-0 z-50 mt-2 w-48 bg-white shadow-lg rounded-md">
           <ul className="py-1 text-gray-800">
             <li
               onClick={() => navigate("/profile")}
