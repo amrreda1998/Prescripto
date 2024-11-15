@@ -15,10 +15,11 @@ const TopDoctorstoBookSection = () => {
       {/* Doctors Cards Section */}
       <div className="flex flex-wrap gap-3 justify-center">
         {doctors &&
-          doctors.slice(0, 5).map(({ name, image, speciality }, index) => {
+          doctors.slice(0, 5).map(({ name, image, speciality, _id }) => {
             return (
               <DoctorCard
-                key={index}
+                key={_id}
+                id={_id}
                 name={name}
                 image={image}
                 speciality={speciality}

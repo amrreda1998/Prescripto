@@ -1,4 +1,12 @@
 import { useState } from "react";
+import {
+  UserIcon,
+  AtSymbolIcon,
+  PhoneIcon,
+  MapPinIcon,
+  CalendarIcon,
+  InformationCircleIcon,
+} from "@heroicons/react/24/solid"; // Importing Heroicons
 
 const ProfilePage = () => {
   const [userData, setUserData] = useState({
@@ -18,6 +26,17 @@ const ProfilePage = () => {
     setUserData((prevData) => ({ ...prevData, [name]: value }));
   };
 
+  // Icon mappings for each field
+  const iconMap = {
+    name: UserIcon,
+    email: AtSymbolIcon,
+    bio: InformationCircleIcon,
+    phone: PhoneIcon,
+    address: MapPinIcon,
+    gender: UserIcon,
+    birthdate: CalendarIcon,
+  };
+
   return (
     <div className="p-8 min-h-screen">
       {/* Profile Header */}
@@ -35,22 +54,28 @@ const ProfilePage = () => {
       <div className="mt-8 bg-white rounded-lg shadow-lg p-6 space-y-4">
         <h3 className="text-xl font-semibold text-[#5F6FFF]">Personal Details</h3>
         <div className="text-gray-700 space-y-3">
-          {Object.keys(userData).map((field) => (
-            <p key={field}>
-              <strong>{field.charAt(0).toUpperCase() + field.slice(1)}:</strong>{" "}
-              {isEditing ? (
-                <input
-                  type={field === "email" ? "email" : "text"}
-                  name={field}
-                  value={userData[field]}
-                  onChange={handleChange}
-                  className="border border-gray-300 p-2 rounded-lg w-full mt-1"
-                />
-              ) : (
-                <span>{userData[field]}</span>
-              )}
-            </p>
-          ))}
+          {Object.keys(userData).map((field) => {
+            const Icon = iconMap[field];
+            return (
+              <div key={field} className="flex items-center gap-3">
+                <Icon className="w-5 h-5 text-[#5F6FFF]" />
+                <p>
+                  <strong>{field.charAt(0).toUpperCase() + field.slice(1)}:</strong>{" "}
+                  {isEditing ? (
+                    <input
+                      type={field === "email" ? "email" : "text"}
+                      name={field}
+                      value={userData[field]}
+                      onChange={handleChange}
+                      className="border border-gray-300 p-2 rounded-lg w-full mt-1"
+                    />
+                  ) : (
+                    <span>{userData[field]}</span>
+                  )}
+                </p>
+              </div>
+            );
+          })}
         </div>
       </div>
 

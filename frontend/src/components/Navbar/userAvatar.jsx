@@ -24,9 +24,11 @@ const UserAvatar = () => {
 
   const handleMouseLeave = () => {
     if (window.innerWidth >= 768) {
-      // Only apply hover for large screens
       hideTimeout = setTimeout(() => {
-        if (!dropdownRef.current.contains(document.querySelector(":hover"))) {
+        if (
+          dropdownRef.current &&
+          !dropdownRef.current.contains(document.querySelector(":hover"))
+        ) {
           setIsDropdownOpen(false);
         }
       }, 200); // Delay the closing of the menu by 200ms

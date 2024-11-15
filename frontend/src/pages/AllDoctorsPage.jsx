@@ -7,7 +7,6 @@ const AllDoctorsPage = () => {
   const [activeFilter, setActiveFilter] = useState("All Doctors");
   const [Doctors, SetDoctors] = useState(doctors);
 
-
   // Handle filtering doctors by speciality
   const handleFilter = (speciality) => {
     if (speciality === "All Doctors") {
@@ -57,9 +56,14 @@ const AllDoctorsPage = () => {
 
         {/* Doctors Cards Section */}
         <div className="flex-1 flex flex-wrap gap-4 justify-center">
-          {Doctors.map(({ image, name, speciality }, index) => (
-            <div key={index} className="w-full md:w-1/5 flex justify-center">
-              <DoctorCard image={image} name={name} speciality={speciality} />
+          {Doctors.map(({ image, name, speciality, _id }) => (
+            <div key={_id} className="w-full md:w-1/5 flex justify-center">
+              <DoctorCard
+                image={image}
+                name={name}
+                speciality={speciality}
+                id={_id}
+              />
             </div>
           ))}
         </div>
