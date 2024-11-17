@@ -1,26 +1,35 @@
 import DoctorCard from "../components/HomePage/Sections/TopDoctorstoBookSection/DoctorCard";
 import { doctors, specialityData } from "./../assets/assets";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BackToTopButton from "./../components/BackToTopButton";
+import { useLocation } from "react-router-dom";
 
 const AllDoctorsPage = () => {
-  const [activeFilter, setActiveFilter] = useState("All Doctors");
-  const [Doctors, SetDoctors] = useState(doctors);
+  const location = useLocation(); // Access location object
+  const speciality = location.state || {speciality:"All Doctors"}; // Extract props from `state`
+
+  const [activeFilter, setActiveFilter] = useState(speciality);
+  const [Doctors, setDoctors] = useState(doctors);
+
+  useEffect(() => {
+    handleFilter(speciality.speciality)
+  },[speciality.speciality]);
 
   // Handle filtering doctors by speciality
   const handleFilter = (speciality) => {
     if (speciality === "All Doctors") {
       setActiveFilter(speciality);
-      SetDoctors(doctors);
+      setDoctors(doctors);
     } else {
       setActiveFilter(speciality);
       // Filtering doctors by speciality
       const filteredDoctors = doctors.filter(
         (doctor) => doctor.speciality === speciality
       );
-      SetDoctors(filteredDoctors);
+      setDoctors(filteredDoctors);
     }
   };
+
   return (
     <div className="p-4">
       <div className="flex flex-wrap gap-4 justify-center">

@@ -3,6 +3,7 @@ import { assets, doctors } from "../assets/assets";
 import DoctorCard from "../components/HomePage/Sections/TopDoctorstoBookSection/DoctorCard";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAppointments } from "../context/AppointmentsContext";
+import { useToken } from "./../context/tokenContext";
 
 const BookAppointmentPage = () => {
   const location = useLocation();
@@ -13,6 +14,7 @@ const BookAppointmentPage = () => {
   const [selectedDay, setSelectedDay] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const { appointments, setAppointments } = useAppointments();
+  const { token } = useToken();
   const navigate = useNavigate();
 
   // Helper function to get the next 7 days starting from today
@@ -43,6 +45,10 @@ const BookAppointmentPage = () => {
 
   // Function to handle booking the appointment
   const handleBookAppointment = () => {
+    if (!token) {
+      alert("Please Login First");
+      return;
+    }
     if (!choosenDoctor || !selectedDay || !selectedTime) return;
 
     //check exsistence of any appointment with the same doctor

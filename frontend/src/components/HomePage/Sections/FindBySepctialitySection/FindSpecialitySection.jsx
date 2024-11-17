@@ -1,5 +1,6 @@
 import SpecialityCard from "./specialityCard";
 import { specialityData } from "./../../../../assets/assets";
+import { NavLink } from "react-router-dom";
 
 const FindSpecialitySection = () => {
   return (
@@ -11,13 +12,16 @@ const FindSpecialitySection = () => {
         Simply browse through our extensive list of trusted doctors,
         <br /> schedule your appointment hassle-free.
       </div>
-      <div className="flex flex-wrap justify-center gap-5 md:space-x-5 p-5">
+      <div className="flex flex-wrap justify-center gap-2 md:space-x-5 p-5">
         {specialityData.map(({ speciality, image }, index) => (
-          <SpecialityCard
-            key={index}
-            imagePath={image}
-            specialityName={speciality}
-          />
+          <NavLink key={index} to={"/alldoctors"} state={{speciality}}>
+
+            <SpecialityCard
+              
+              imagePath={image}
+              specialityName={speciality}
+            />
+          </NavLink>
         ))}
       </div>
     </>

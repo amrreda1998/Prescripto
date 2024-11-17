@@ -67,11 +67,11 @@ const Navbar = () => {
 
       {/* Dropdown menu for NavLinks on small  */}
       {token && (
-        <div className="md:hidden relative z-50">
+        <div className="md:hidden relative z-50 ">
           <img
             src={assets.menu_icon}
             onClick={() => setDropdownOpen(!dropdownOpen)}
-            className=" text-white  size-10"
+            className=" text-white  size-10 my-3"
           />
           {dropdownOpen && (
             <div className="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-md">

@@ -54,7 +54,7 @@ const UserAvatar = () => {
         ref={avatarRef}
         src={assets.profile_pic}
         alt="User Avatar"
-        className="w-10 h-10 rounded-full cursor-pointer"
+        className="w-16  cursor-pointer rounded-full  border-4 border-[#5F6FFF] shadow-lg"
         onClick={handleClick} // Handle click for small screens
         onMouseEnter={handleMouseEnter} // Handle hover for large screens
         onMouseLeave={handleMouseLeave} // Handle hover for large screens
@@ -71,13 +71,13 @@ const UserAvatar = () => {
           <ul className="py-1 text-gray-800">
             <li
               onClick={() => handleItemClick("/profile")}
-              className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+              className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
             >
               My Profile
             </li>
             <li
               onClick={() => handleItemClick("/myappointments")}
-              className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+              className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
             >
               My Appointments
             </li>
@@ -86,7 +86,7 @@ const UserAvatar = () => {
                 setToken(false);
                 handleItemClick(""); // Optionally redirect after logout
               }}
-              className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+              className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
             >
               Logout
             </li>

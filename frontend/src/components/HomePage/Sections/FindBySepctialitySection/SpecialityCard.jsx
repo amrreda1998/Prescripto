@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 
 const SpecialityCard = ({ imagePath, specialityName }) => {
   return (
-    <div className="flex flex-col items-center text-center p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow w-28">
+    <div className="flex flex-col items-center text-center p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow w-32">
       <img
         src={imagePath}
         alt={specialityName}
