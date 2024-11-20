@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "admin-apis",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

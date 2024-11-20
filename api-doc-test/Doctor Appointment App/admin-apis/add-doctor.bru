@@ -1,0 +1,40 @@
+meta {
+  name: add-doctor
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:4000/api/admin/add-doctor
+  body: multipartForm
+  auth: none
+}
+
+body:form-urlencoded {
+  name: Dr. Richard James
+  email: amr@gmail.com
+  password: 12333
+  image: 
+  : 
+  : 
+  : 
+  : 
+  : 
+}
+
+body:multipart-form {
+  name: Dr. Richard James
+  email: richard@demo.com
+  password: 123345678
+  speciality: General physician
+  degree: MMBS
+  about: Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies. Dr. Davis has a strong commitment to delivering comprehensive medical care, focusing on preventive medicine, early diagnosis, and effective treatment strategies.
+  fees: 50
+  address: {"line1": "17th Cross, Richmond","line2": "Circle, Ring Road, London"}
+  experience: 5 years
+  image: @file(E:\courses\mern-stack-bootcamp\my_projects\Doctor Appointment Booking System\Prescripto\frontend\src\assets\doc1.png)
+}
+
+docs {
+  Add doctor api 
+}
