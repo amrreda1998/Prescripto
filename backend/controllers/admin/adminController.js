@@ -3,8 +3,11 @@ import fs from 'fs/promises';
 import { doctorModel } from '../../models/doctorModel.js';
 import bcrypt from 'bcrypt';
 import { validateDoctorData } from './helperFundtions.js';
+import { adminModel } from '../../models/adminModel.js';
+import { validatePassword } from '../../utlis/auth.js';
+import { generateToken } from '../../utlis/tokenGenerator.js';
 
-//API for adding doctor :
+//Adding a Doctor :
 
 export const addDoctor = async (req, res) => {
   try {
@@ -101,4 +104,39 @@ export const addDoctor = async (req, res) => {
     console.error('Error:', error);
     res.status(500).send({ success: false, message: 'Internal server error' });
   }
+};
+
+// ADMIN LOGIN  //AUTHROIZATION PHASE
+export const adminLogin = async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res
+      .status(400)
+      .send({ success: false, message: 'invalid email or password' });
+  }
+  //validate the email
+  const adminData = await adminModel.findOne({ email });
+  if (!adminData) {
+    return res
+      .status(404)
+      .send({ success: false, message: 'invalid email or password' });
+  }
+  //valdiate the password
+  const isValidPassword = await validatePassword(password, adminData.password);
+  if (!isValidPassword) {
+    return res
+      .status(400)
+      .send({ success: false, message: 'invalid email or password' });
+  }
+
+  //generate token (_id,role) TO USE IT IN THE AUTHETICATION PHASE
+  const token = generateToken(adminData._id.toString(), 'admin');
+  if (!token) {
+    return res
+      .status(400)
+      .send({ success: false, message: 'Error generating token' });
+  }
+  //send the token to the browser to store it
+  return res.status(400).send({ success: true, message: token });
 };

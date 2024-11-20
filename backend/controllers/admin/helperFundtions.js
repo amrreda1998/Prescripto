@@ -1,6 +1,5 @@
 import validtor from 'validator';
 
-
 export const validateDoctorData = ({
   name,
   email,
@@ -12,7 +11,6 @@ export const validateDoctorData = ({
   fees,
   address,
 }) => {
-
   if (
     !name ||
     !email ||
@@ -35,3 +33,4 @@ export const validateDoctorData = ({
   }
   return null; // Validation passed
 };
+

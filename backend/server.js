@@ -15,20 +15,13 @@ configureCloudinary();
 app.use(express.json());
 app.use(cors());
 
-
-
 //App APIS
 app.use('/api/admin', adminRouter);
-
-
-
-
 
 //testing server
 app.get('/test', (req, res) => {
   res.send(`Server is working .. ;)`);
 });
-
 
 app.listen(port, () => {
   console.log(`Server is working on port ${port} ....`);
