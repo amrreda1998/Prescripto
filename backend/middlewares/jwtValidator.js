@@ -20,6 +20,8 @@ const jwtValidator = (allowedRoles = []) => {
           .status(403)
           .json({ success: false, message: 'Forbidden: Insufficient role' });
       }
+      //sending user id in the req in a created property (userId) to the controller 
+      req.userId = decoded.id.toString() ;
       next();
     } catch (error) {
       res.status(401).json({ success: false, message: 'Invalid token' });

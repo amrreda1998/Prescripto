@@ -41,7 +41,7 @@ const Header = () => {
       </div>
 
       {/* Right side */}
-      <div className="hidden md:block w-1/2">
+      <div className="hidden md:block w-1/2 relative -bottom-1 my-1">
         <img src={assets.header_img} alt="Header Image" className="" />
       </div>
     </div>

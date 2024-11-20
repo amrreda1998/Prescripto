@@ -8,7 +8,6 @@ import { validatePassword } from '../../utlis/auth.js';
 import { generateToken } from '../../utlis/tokenGenerator.js';
 
 //Adding a Doctor :
-
 export const addDoctor = async (req, res) => {
   try {
     //DOCTOR STRING DATA :
