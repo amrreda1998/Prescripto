@@ -1,31 +1,66 @@
 // RegistrationPage.jsx
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { backendURL } from '../constants/backendURL';
 
 const SignUpPage = () => {
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
   });
-  const [error, setError] = useState("");
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
-    setError(""); // Clear error when user types
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
+
+    // Basic validation
+    if (!formData.name || !formData.email || !formData.password) {
+      toast.error('All fields are required.');
       return;
     }
-    console.log("Form submitted:", formData);
+
+    if (formData.password !== formData.confirmPassword) {
+      toast.error('Passwords do not match');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${backendURL}/api/user/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast.success('Account created successfully! Redirecting to login...');
+        setTimeout(() => navigate('/login'), 2000); // Redirect after success
+      } else {
+        toast.error(data.message || 'Something went wrong. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error during registration:', error);
+      toast.error('Failed to connect to the server. Please try again later.');
+    }
   };
 
   return (
@@ -87,11 +122,6 @@ const SignUpPage = () => {
               required
             />
           </div>
-          {error && (
-            <p className="text-red-500 text-center mb-4 font-semibold">
-              {error}
-            </p>
-          )}
           <button
             type="submit"
             className="w-full bg-[#5F6FFF] text-white py-2 px-4 rounded-lg hover:bg-[#4e59d9] transition duration-200 font-semibold"
@@ -100,12 +130,13 @@ const SignUpPage = () => {
           </button>
         </form>
         <p className="text-center text-gray-500 mt-4">
-          Already have an account?{" "}
+          Already have an account?{' '}
           <Link to="/login" className="text-[#5F6FFF] hover:underline">
             Login here
           </Link>
         </p>
       </div>
+      <ToastContainer />
     </div>
   );
 };
