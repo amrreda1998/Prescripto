@@ -1,12 +1,16 @@
 // LoginPage.jsx
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { backendURL } from '../constants/backendURL';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from 'react-toastify';
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -15,9 +19,33 @@ const LoginPage = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
+
+    try {
+      const response = await fetch(`${backendURL}/api/user/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast.success(`Welcome ${data.userName}`);
+        setTimeout(() => navigate('/'), 1000); // Redirect after success
+      } else {
+        toast.error(data.message || 'Something went wrong. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error during registration:', error);
+      toast.error('Failed to connect to the server. Please try again later.');
+    }
   };
 
   return (
@@ -64,11 +92,12 @@ const LoginPage = () => {
         <p className="text-center text-gray-500 mt-4">
           You do not have an account?
           <Link to="/signup" className="text-[#5F6FFF] hover:underline">
-            {" "}
+            {' '}
             Register here
           </Link>
         </p>
       </div>
+      <ToastContainer />
     </div>
   );
 };
