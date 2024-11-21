@@ -1,8 +1,8 @@
-import { NavLink, useNavigate } from "react-router-dom";
-import { assets } from "../../assets/assets";
-import { useToken } from "../../context/tokenContext";
-import UserAvatar from "./userAvatar";
-import { useState } from "react";
+import { NavLink, useNavigate } from 'react-router-dom';
+import { assets } from '../../assets/assets';
+import { useToken } from '../../context/tokenContext';
+import UserAvatar from './userAvatar';
+import { useState } from 'react';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -17,47 +17,47 @@ const Navbar = () => {
         alt=""
         className="w-44 cursor-pointer"
         onClick={() => {
-          navigate("/");
+          navigate('/');
         }}
       />
 
       {/* Nav Links - shown only on large screens and medium screens */}
       <ul className="hidden md:flex items-center gap-5 font-medium">
         <NavLink
-          to={"/"}
+          to={'/'}
           className={({ isActive }) =>
             `py-2 px-3 rounded ${
-              isActive ? "bg-[#5F6FFF] text-white" : "text-black"
+              isActive ? 'bg-[#5F6FFF] text-white' : 'text-black'
             }`
           }
         >
           <li>Home</li>
         </NavLink>
         <NavLink
-          to={"/alldoctors"}
+          to={'/alldoctors'}
           className={({ isActive }) =>
             `py-2 px-3 rounded ${
-              isActive ? "bg-[#5F6FFF] text-white" : "text-black"
+              isActive ? 'bg-[#5F6FFF] text-white' : 'text-black'
             }`
           }
         >
           <li>All Doctors</li>
         </NavLink>
         <NavLink
-          to={"/contacts"}
+          to={'/contacts'}
           className={({ isActive }) =>
             `py-2 px-3 rounded ${
-              isActive ? "bg-[#5F6FFF] text-white" : "text-black"
+              isActive ? 'bg-[#5F6FFF] text-white' : 'text-black'
             }`
           }
         >
           <li>Contacts</li>
         </NavLink>
         <NavLink
-          to={"/about"}
+          to={'/about'}
           className={({ isActive }) =>
             `py-2 px-3 rounded ${
-              isActive ? "bg-[#5F6FFF] text-white" : "text-black"
+              isActive ? 'bg-[#5F6FFF] text-white' : 'text-black'
             }`
           }
         >
@@ -77,44 +77,44 @@ const Navbar = () => {
             <div className="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-md">
               <ul className="flex flex-col gap-2 p-4 font-medium">
                 <NavLink
-                  to={"/"}
+                  to={'/'}
                   onClick={() => setDropdownOpen(false)}
                   className={({ isActive }) =>
                     `py-2 px-3 rounded ${
-                      isActive ? "bg-[#5F6FFF] text-white" : "text-black"
+                      isActive ? 'bg-[#5F6FFF] text-white' : 'text-black'
                     }`
                   }
                 >
                   Home
                 </NavLink>
                 <NavLink
-                  to={"/alldoctors"}
+                  to={'/alldoctors'}
                   onClick={() => setDropdownOpen(false)}
                   className={({ isActive }) =>
                     `py-2 px-3 rounded ${
-                      isActive ? "bg-[#5F6FFF] text-white" : "text-black"
+                      isActive ? 'bg-[#5F6FFF] text-white' : 'text-black'
                     }`
                   }
                 >
                   All Doctors
                 </NavLink>
                 <NavLink
-                  to={"/contacts"}
+                  to={'/contacts'}
                   onClick={() => setDropdownOpen(false)}
                   className={({ isActive }) =>
                     `py-2 px-3 rounded ${
-                      isActive ? "bg-[#5F6FFF] text-white" : "text-black"
+                      isActive ? 'bg-[#5F6FFF] text-white' : 'text-black'
                     }`
                   }
                 >
                   Contacts
                 </NavLink>
                 <NavLink
-                  to={"/about"}
+                  to={'/about'}
                   onClick={() => setDropdownOpen(false)}
                   className={({ isActive }) =>
                     `py-2 px-3 rounded ${
-                      isActive ? "bg-[#5F6FFF] text-white" : "text-black"
+                      isActive ? 'bg-[#5F6FFF] text-white' : 'text-black'
                     }`
                   }
                 >
@@ -130,7 +130,7 @@ const Navbar = () => {
       {!token ? (
         <button
           className="bg-[#5F6FFF] py-3 px-4 text-white rounded-full font-medium"
-          onClick={() => navigate("/signup")}
+          onClick={() => navigate('/signup')}
         >
           Create Account
         </button>

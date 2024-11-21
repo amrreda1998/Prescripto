@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { backendURL } from '../constants/backendURL';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast, ToastContainer } from 'react-toastify';
+import { useToken } from '../context/tokenContext';
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +12,8 @@ const LoginPage = () => {
     password: '',
   });
   const navigate = useNavigate();
+  const { setToken } = useToken(); // token for authorization
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -21,7 +24,7 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setIsSubmitting(true);
     try {
       const response = await fetch(`${backendURL}/api/user/login`, {
         method: 'POST',
@@ -38,6 +41,10 @@ const LoginPage = () => {
 
       if (response.ok) {
         toast.success(`Welcome ${data.userName}`);
+        //store token into browser storage
+        localStorage.setItem('userToken', data.token);
+        //set the token to the userToken :
+        setToken(data.token);
         setTimeout(() => navigate('/'), 1000); // Redirect after success
       } else {
         toast.error(data.message || 'Something went wrong. Please try again.');
@@ -46,6 +53,7 @@ const LoginPage = () => {
       console.error('Error during registration:', error);
       toast.error('Failed to connect to the server. Please try again later.');
     }
+    setIsSubmitting(false);
   };
 
   return (
@@ -84,9 +92,11 @@ const LoginPage = () => {
 
           <button
             type="submit"
-            className="w-full bg-[#5F6FFF] text-white py-2 px-4 rounded-lg hover:bg-[#4e59d9] transition duration-200 font-semibold"
+            disabled={isSubmitting}
+            className={`w-full bg-[#5F6FFF] text-white py-2 px-4 rounded-lg 
+    ${isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#4e59d9]'}`}
           >
-            Login
+            {isSubmitting ? 'Logging in...' : 'Login'}
           </button>
         </form>
         <p className="text-center text-gray-500 mt-4">
@@ -97,7 +107,7 @@ const LoginPage = () => {
           </Link>
         </p>
       </div>
-      <ToastContainer />
+      <ToastContainer autoClose={2000} />
     </div>
   );
 };

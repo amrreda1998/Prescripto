@@ -83,8 +83,11 @@ const UserAvatar = () => {
             </li>
             <li
               onClick={() => {
-                setToken(false);
-                handleItemClick(""); // Optionally redirect after logout
+                //remove the token from the local storage 
+                localStorage.removeItem('userToken');
+                //reset the token 
+                setToken('');
+                handleItemClick("/login"); // Optionally redirect after logout
               }}
               className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
             >

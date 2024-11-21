@@ -83,5 +83,5 @@ export const userLogin = async (req, res) => {
   //return the token in response
   return res
     .status(200)
-    .send({ success: true, message: userToken, userName: userData.name });
+    .send({ success: true, token: userToken, userName: userData.name });
 };
