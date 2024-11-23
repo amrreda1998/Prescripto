@@ -1,0 +1,15 @@
+meta {
+  name: get user info
+  type: http
+  seq: 4
+}
+
+get {
+  url: http://localhost:4000/api/user/
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3M2UyZDc5MzMyN2E5MTkyZGVmMDhmYyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzMyMzk2MDUzfQ.cL9UQ3gmrDDEFNrgnO6Q2CfdGaIQ_8ZAWgardM4YnHU
+}

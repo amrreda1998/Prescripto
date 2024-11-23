@@ -1,0 +1,21 @@
+meta {
+  name: update user info
+  type: http
+  seq: 5
+}
+
+put {
+  url: http://localhost:4000/api/user/
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3M2UyYzM5MzMyN2E5MTkyZGVmMDhmNiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzMyNDAwOTg4fQ.TVBaIi-mGxkPiExz-4rKKe0bo69lAKw9y7CU9o7SKdA
+}
+
+body:json {
+  {
+    "bio":"my name is Amr"
+  }
+}

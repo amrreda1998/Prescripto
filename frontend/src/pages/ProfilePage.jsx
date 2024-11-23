@@ -1,41 +1,107 @@
-import { useState } from "react";
-import {
-  UserIcon,
-  AtSymbolIcon,
-  PhoneIcon,
-  MapPinIcon,
-  CalendarIcon,
-  InformationCircleIcon,
-} from "@heroicons/react/24/solid"; // Importing Heroicons
+import { useEffect, useState } from 'react';
+import { backendURL } from './../constants/backendURL';
+import { useToken } from './../context/tokenContext';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ProfilePage = () => {
-  const [userData, setUserData] = useState({
-    name: "Amr Reda",
-    email: "AmrReda@example.com",
-    bio: "Healthcare enthusiast, loves fitness and wellness.",
-    phone: "+123456789",
-    address: "1234 Elm St, Springfield, USA",
-    gender: "male",
-    birthdate: "14-11-2024",
-  });
-  const [isEditing, setIsEditing] = useState(false);
+  const DefaultUserdataPlaceHolder = {
+    name: 'User',
+    email: 'example@gmail.com',
+    bio: '',
+    image: '',
+    gender: 'Not Selected', // Default gender value
+    address: '',
+    birthdate: '', // Default birthdate value
+    phone: '',
+  };
 
-  // Update field values dynamically
+  const [userData, setUserData] = useState(DefaultUserdataPlaceHolder);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Loading state
+  const { token } = useToken();
+
+  // Function to fetch user data from API
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`${backendURL}/api/user/`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Error fetching data from the server');
+      }
+
+      const { userInfo } = await response.json();
+      setUserData(userInfo);
+    } catch (error) {
+      console.error('Error fetching data:', error.message);
+      toast.error(error.message || 'Failed to fetch user data');
+    } finally {
+      setIsLoading(false); // Stop loading after the request finishes
+    }
+  };
+
+  useEffect(() => {
+    fetchData(); // Fetch user data when the component mounts
+  }, [token]);
+
+  // Handle changes in the input fields dynamically
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  // Icon mappings for each field
-  const iconMap = {
-    name: UserIcon,
-    email: AtSymbolIcon,
-    bio: InformationCircleIcon,
-    phone: PhoneIcon,
-    address: MapPinIcon,
-    gender: UserIcon,
-    birthdate: CalendarIcon,
+  // Function to handle saving user info updates
+  const handleSave = async () => {
+    try {
+      const response = await fetch(`${backendURL}/api/user/`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Error saving user data');
+      }
+
+      const { userInfo, message } = await response.json();
+      setUserData(userInfo); // Update the state with the updated data
+      setIsEditing(false); // Exit the editing mode
+
+      toast.success(message || 'Profile updated successfully!');
+    } catch (error) {
+      console.error('Error saving data:', error.message);
+      toast.error(error.message || 'Failed to update profile');
+    }
   };
+
+  // Fields to display
+  const fieldsToDisplay = [
+    'name',
+    'email',
+    'bio',
+    'gender',
+    'address',
+    'birthdate',
+    'phone',
+  ];
+
+  // Loading UI component
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-4 border-blue-500"></div> {/* Loading spinner */}
+      </div>
+    );
+  }
 
   return (
     <div className="p-8 min-h-screen">
@@ -52,42 +118,73 @@ const ProfilePage = () => {
 
       {/* Personal Details Section */}
       <div className="mt-8 bg-white rounded-lg shadow-lg p-6 space-y-4">
-        <h3 className="text-xl font-semibold text-[#5F6FFF]">Personal Details</h3>
+        <h3 className="text-xl font-semibold text-[#5F6FFF]">
+          Personal Details
+        </h3>
         <div className="text-gray-700 space-y-3">
-          {Object.keys(userData).map((field) => {
-            const Icon = iconMap[field];
-            return (
-              <div key={field} className="flex items-center gap-3">
-                <Icon className="w-5 h-5 text-[#5F6FFF]" />
-                <p>
-                  <strong>{field.charAt(0).toUpperCase() + field.slice(1)}:</strong>{" "}
-                  {isEditing ? (
+          {fieldsToDisplay.map((field) => (
+            <div key={field} className="flex items-center gap-3">
+              <p>
+                <strong>{`${
+                  field.charAt(0).toUpperCase() + field.slice(1)
+                }:  `}</strong>
+                {isEditing ? (
+                  field === 'gender' ? (
+                    <select
+                      name={field}
+                      value={userData[field]}
+                      onChange={handleChange}
+                      className="border border-gray-300 p-2 rounded-lg w-full mt-1"
+                    >
+                      <option value="Not Selected">Not Selected</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                    </select>
+                  ) : field === 'birthdate' ? (
                     <input
-                      type={field === "email" ? "email" : "text"}
+                      type="date"
                       name={field}
                       value={userData[field]}
                       onChange={handleChange}
                       className="border border-gray-300 p-2 rounded-lg w-full mt-1"
                     />
                   ) : (
-                    <span>{userData[field]}</span>
-                  )}
-                </p>
-              </div>
-            );
-          })}
+                    <input
+                      type={field === 'email' ? 'email' : 'text'}
+                      name={field}
+                      value={userData[field]}
+                      onChange={handleChange}
+                      className="border border-gray-300 p-2 rounded-lg w-full mt-1"
+                      placeholder={`Enter your ${field}`}
+                    />
+                  )
+                ) : (
+                  <span>{userData[field]}</span>
+                )}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* Edit Profile Button */}
+      {/* Edit/Save Button */}
       <div className="mt-8 text-center">
         <button
           className="bg-[#5F6FFF] text-white py-2 px-6 rounded-lg shadow hover:bg-[#4e58e0] transition-all"
-          onClick={() => setIsEditing(!isEditing)}
+          onClick={() => {
+            if (isEditing) {
+              handleSave();
+            } else {
+              setIsEditing(true); // Enable editing mode
+            }
+          }}
         >
-          {isEditing ? "Save" : "Edit Profile"}
+          {isEditing ? 'Save' : 'Edit Profile'}
         </button>
       </div>
+
+      {/* Toast Container for notifications */}
+      <ToastContainer />
     </div>
   );
 };

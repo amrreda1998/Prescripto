@@ -63,7 +63,6 @@ export const userLogin = async (req, res) => {
   //Check if the email  exists in the database or not :
   const userData = await userModel.findOne({ email });
 
-
   if (!userData) {
     return res
       .status(400)
@@ -85,3 +84,75 @@ export const userLogin = async (req, res) => {
     .status(200)
     .send({ success: true, token: userToken, userName: userData.name });
 };
+
+export const getUserInfo = async (req, res) => {
+  try {
+    //get user data from the database :
+    const userId = req.userId;
+
+    if (!userId) {
+      return res.status(400).sent({
+        success: false,
+        message: 'Error Retrieving user data , no userID',
+      });
+    }
+
+    const userData = await userModel.findOne({ _id: userId });
+
+    if (!userData) {
+      return res.status(404).send({
+        success: false,
+        message: 'Error Retrieving user data , user not found',
+      });
+    }
+
+    //return the userData in a response :
+    return res.status(200).send({ success: true, userInfo: userData });
+  } catch (error) {
+    return res
+      .status(500)
+      .send({ success: false, message: 'Internal server error' });
+  }
+};
+
+export const updateUserInfo = async (req, res) => {
+  try {
+    // Get user data from the database
+    const userId = req.userId;
+    const newUserData = req.body;
+
+    // Check if userId is provided
+    if (!userId) {
+      return res.status(400).send({
+        success: false,
+        message: 'Error Retrieving user data, no userID',
+      });
+    }
+
+    // Find the user in the database
+    const userData = await userModel.findOne({ _id: userId });
+
+    if (!userData) {
+      return res.status(404).send({
+        success: false,
+        message: 'Error updating user data, user not found',
+      });
+    }
+
+    // Update the user data fields from the request body
+    Object.keys(newUserData).forEach((key) => {
+      if (newUserData[key] !== undefined) {
+        userData[key] = newUserData[key]; // Update only the provided fields
+      }
+    });
+
+    // Save the updated user data
+    await userData.save();
+
+    // Return the updated user data in the response
+    return res.status(200).send({ success: true, userInfo: userData });
+  } catch (error) {
+    return res.status(500).send({ success: false, message: 'Internal server error' });
+  }
+};
+
