@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { backendURL } from './../constants/backendURL';
 import { useToken } from './../context/tokenContext';
 import { toast, ToastContainer } from 'react-toastify';
@@ -7,39 +7,9 @@ import { CameraIcon } from '@heroicons/react/24/outline'; // v2 icon import path
 import { useUser } from '../context/userContext.js';
 
 const ProfilePage = () => {
-  const {userData, setUserData} = useUser();
+  const { userData, setUserData } = useUser();
   const [isEditing, setIsEditing] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // Loading state  
   const { token } = useToken();
-
-  // Function to fetch user data from API
-  const fetchData = async () => {
-    try {
-      const response = await fetch(`${backendURL}/api/user/`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Error fetching data from the server');
-      }
-
-      const { userInfo } = await response.json();
-      setUserData(userInfo);
-    } catch (error) {
-      console.error('Error fetching data:', error.message);
-      toast.error(error.message || 'Failed to fetch user data');
-    } finally {
-      setIsLoading(false); // Stop loading after the request finishes
-    }
-  };
-
-  useEffect(() => {
-    fetchData(); // Fetch user data when the component mounts
-  }, [token]);
 
   // Handle changes in the input fields dynamically
   const handleChange = (e) => {
@@ -124,16 +94,6 @@ const ProfilePage = () => {
     'birthdate',
     'phone',
   ];
-
-  // Loading UI component
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-t-4 border-blue-500"></div>{' '}
-        {/* Loading spinner */}
-      </div>
-    );
-  }
 
   return (
     <div className="p-8 min-h-screen">

@@ -51,16 +51,25 @@ const UserAvatar = () => {
   return (
     <div className="relative inline-block">
       {/* Avatar image */}
-      <div className="w-16 h-16 rounded-full overflow-hidden border-4 border-[#5F6FFF] shadow-lg relative">
-        <img
-          ref={avatarRef}
-          src={userData.image}
-          alt="User Avatar"
-          className="absolute top-4 left-1/2 transform -translate-x-1/2 scale-150 cursor-pointer"
-          onClick={handleClick} // Handle click for small screens
-          onMouseEnter={handleMouseEnter} // Handle hover for large screens
-          onMouseLeave={handleMouseLeave} // Handle hover for large screens
-        />
+      <div
+        className="w-16 h-16 rounded-full overflow-hidden border-4 border-[#5F6FFF] shadow-lg relative cursor-pointer"
+        onClick={handleClick} // Handle click for small screens
+        onMouseEnter={handleMouseEnter} // Handle hover for large screens
+        onMouseLeave={handleMouseLeave} // Handle hover for large screens}
+      >
+        {userData.image ? (
+          <img
+            ref={avatarRef}
+            src={userData.image}
+            alt="User Avatar"
+            className="absolute top-4 left-1/2 transform -translate-x-1/2 scale-150 "
+          />
+        ) : (
+          <span className="flex  justify-center w-full h-full    bg-[#5F6FFF] text-white text-5xl font-bold">
+            {' '}
+            {userData.name.charAt(0).toUpperCase()}
+          </span>
+        )}
       </div>
 
       {/* Dropdown menu */}
