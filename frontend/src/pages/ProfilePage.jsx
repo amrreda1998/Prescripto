@@ -3,22 +3,13 @@ import { backendURL } from './../constants/backendURL';
 import { useToken } from './../context/tokenContext';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { CameraIcon } from '@heroicons/react/24/outline'; // v2 icon import path
+import { useUser } from '../context/userContext.js';
 
 const ProfilePage = () => {
-  const DefaultUserdataPlaceHolder = {
-    name: 'User',
-    email: 'example@gmail.com',
-    bio: '',
-    image: '',
-    gender: 'Not Selected', // Default gender value
-    address: '',
-    birthdate: '', // Default birthdate value
-    phone: '',
-  };
-
-  const [userData, setUserData] = useState(DefaultUserdataPlaceHolder);
+  const {userData, setUserData} = useUser();
   const [isEditing, setIsEditing] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // Loading state
+  const [isLoading, setIsLoading] = useState(true); // Loading state  
   const { token } = useToken();
 
   // Function to fetch user data from API
@@ -83,6 +74,46 @@ const ProfilePage = () => {
     }
   };
 
+  // Function to handle image upload
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Create a FormData object to send the file to the backend
+      const formData = new FormData();
+      formData.append('profileImage', file); // 'profileImage' is the field name expected by Multer
+
+      try {
+        const response = await fetch(
+          `${backendURL}/api/user/upload-profile-image`,
+          {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            body: formData,
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error('Failed to upload image');
+        }
+
+        const data = await response.json();
+
+        // Update the user data with the new image URL returned from the backend
+        setUserData((prevData) => ({
+          ...prevData,
+          image: data.imageUrl, // Cloudinary URL of the uploaded image
+        }));
+
+        toast.success('Profile image updated successfully');
+      } catch (error) {
+        console.error('Error uploading image:', error);
+        toast.error('Failed to upload profile image');
+      }
+    }
+  };
+
   // Fields to display
   const fieldsToDisplay = [
     'name',
@@ -98,7 +129,8 @@ const ProfilePage = () => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-t-4 border-blue-500"></div> {/* Loading spinner */}
+        <div className="animate-spin rounded-full h-32 w-32 border-t-4 border-blue-500"></div>{' '}
+        {/* Loading spinner */}
       </div>
     );
   }
@@ -107,8 +139,32 @@ const ProfilePage = () => {
     <div className="p-8 min-h-screen">
       {/* Profile Header */}
       <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center space-y-4 md:flex-row md:space-x-6 md:p-10">
-        <div className="flex items-center justify-center w-32 h-32 rounded-full bg-[#5F6FFF] text-white text-6xl font-bold">
-          {userData.name.charAt(0).toUpperCase()}
+        <div className="relative">
+          <div className="flex items-center justify-center w-32 h-32  rounded-full bg-[#5F6FFF] text-white text-6xl font-bold">
+            {userData.image ? (
+              <img
+                src={userData.image}
+                alt="Profile"
+                className="w-32 h-36  object-cover rounded"
+              />
+            ) : (
+              userData.name.charAt(0).toUpperCase()
+            )}
+          </div>
+          {/* Camera icon to trigger image upload */}
+          <label
+            htmlFor="file-upload"
+            className="absolute -bottom-2 right-0 p-2 bg-[#5F6FFF] rounded-full cursor-pointer"
+          >
+            <CameraIcon className="w-6 h-6 text-white" />
+          </label>
+          <input
+            type="file"
+            id="file-upload"
+            className="hidden"
+            accept="image/*"
+            onChange={handleImageUpload}
+          />
         </div>
         <div className="text-center md:text-left">
           <h2 className="text-2xl font-semibold">{userData.name}</h2>

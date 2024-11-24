@@ -1,12 +1,13 @@
-import { useNavigate } from "react-router-dom";
-import { useState, useRef } from "react";
-import { assets } from "./../../assets/assets";
-import { useToken } from "../../context/tokenContext";
+import { useNavigate } from 'react-router-dom';
+import { useState, useRef } from 'react';
+import { useToken } from '../../context/tokenContext';
+import { useUser } from './../../context/userContext';
 
 const UserAvatar = () => {
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { setToken } = useToken(); // token for authorization
+  const { userData } = useUser();
 
   const dropdownRef = useRef(null); // Ref to the dropdown menu
   const avatarRef = useRef(null); // Ref to the avatar image
@@ -27,7 +28,7 @@ const UserAvatar = () => {
       hideTimeout = setTimeout(() => {
         if (
           dropdownRef.current &&
-          !dropdownRef.current.contains(document.querySelector(":hover"))
+          !dropdownRef.current.contains(document.querySelector(':hover'))
         ) {
           setIsDropdownOpen(false);
         }
@@ -50,15 +51,17 @@ const UserAvatar = () => {
   return (
     <div className="relative inline-block">
       {/* Avatar image */}
-      <img
-        ref={avatarRef}
-        src={assets.profile_pic}
-        alt="User Avatar"
-        className="w-16  cursor-pointer rounded-full  border-4 border-[#5F6FFF] shadow-lg"
-        onClick={handleClick} // Handle click for small screens
-        onMouseEnter={handleMouseEnter} // Handle hover for large screens
-        onMouseLeave={handleMouseLeave} // Handle hover for large screens
-      />
+      <div className="w-16 h-16 rounded-full overflow-hidden border-4 border-[#5F6FFF] shadow-lg relative">
+        <img
+          ref={avatarRef}
+          src={userData.image}
+          alt="User Avatar"
+          className="absolute top-4 left-1/2 transform -translate-x-1/2 scale-150 cursor-pointer"
+          onClick={handleClick} // Handle click for small screens
+          onMouseEnter={handleMouseEnter} // Handle hover for large screens
+          onMouseLeave={handleMouseLeave} // Handle hover for large screens
+        />
+      </div>
 
       {/* Dropdown menu */}
       {isDropdownOpen && (
@@ -70,24 +73,24 @@ const UserAvatar = () => {
         >
           <ul className="py-1 text-gray-800">
             <li
-              onClick={() => handleItemClick("/profile")}
+              onClick={() => handleItemClick('/profile')}
               className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
             >
               My Profile
             </li>
             <li
-              onClick={() => handleItemClick("/myappointments")}
+              onClick={() => handleItemClick('/myappointments')}
               className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
             >
               My Appointments
             </li>
             <li
               onClick={() => {
-                //remove the token from the local storage 
+                //remove the token from the local storage
                 localStorage.removeItem('userToken');
-                //reset the token 
+                //reset the token
                 setToken('');
-                handleItemClick("/login"); // Optionally redirect after logout
+                handleItemClick('/login'); // Optionally redirect after logout
               }}
               className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
             >

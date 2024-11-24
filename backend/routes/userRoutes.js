@@ -5,6 +5,7 @@ import jwtValidator from '../middlewares/jwtValidator.js';
 import {
   getUserInfo,
   updateUserInfo,
+  uploadProfileImage,
   userLogin,
   userRegister,
 } from '../controllers/users/userController.js';
@@ -22,5 +23,13 @@ userRouter.get('/', jwtValidator(['user']), getUserInfo);
 
 //UPDATE USER INFO API
 userRouter.put('/', jwtValidator(['user']), updateUserInfo);
+
+//UPLOAD USER IMAGE API
+userRouter.post(
+  '/upload-profile-image',
+  jwtValidator(['user']),
+  upload.single('profileImage'),
+  uploadProfileImage
+);
 
 export default userRouter;

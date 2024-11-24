@@ -3,6 +3,7 @@ import { userModel } from './../../models/userModel.js';
 import validator from 'validator';
 import { generateToken } from '../../utlis/tokenGenerator.js';
 import { validatePassword } from './../../utlis/auth.js';
+import { uploadImage } from '../../config/cloudinary.js';
 
 export const userRegister = async (req, res) => {
   //get the data form frontend
@@ -152,7 +153,47 @@ export const updateUserInfo = async (req, res) => {
     // Return the updated user data in the response
     return res.status(200).send({ success: true, userInfo: userData });
   } catch (error) {
-    return res.status(500).send({ success: false, message: 'Internal server error' });
+    return res
+      .status(500)
+      .send({ success: false, message: 'Internal server error' });
   }
 };
 
+export const uploadProfileImage = async (req, res) => {
+  try {
+    // Get user data from the database
+    const userId = req.userId;
+
+    // Upload to Cloudinary
+    const result = await uploadImage(req.file.path);
+
+    // check the result
+    if (!result) {
+      return res
+        .status(400)
+        .send({ success: false, message: 'Error uploading image' });
+    }
+
+    const updatedUser = await userModel.findByIdAndUpdate(
+      userId, // User ID from JWT token
+      { image: result.secure_url }, // Save the Cloudinary URL in the 'image' field
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).send({
+        success: false,
+        message: 'Error uploading image , Can not find user data',
+      });
+    }
+
+    res.status(200).json({
+      message: 'Profile image uploaded successfully',
+      imageUrl: result.secure_url, // Return the URL of the uploaded image
+      userInfo: updatedUser,
+    });
+  } catch (error) {
+    console.error('Error uploading profile image:', error);
+    res.status(500).json({ success: false, message: 'Failed to upload image' });
+  }
+};
