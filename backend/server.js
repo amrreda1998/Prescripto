@@ -8,6 +8,7 @@ import userRouter from './routes/userRoutes.js';
 import { seedDoctors } from './utlis/seedDoctors.js';
 import doctorRouter from './routes/doctorRoutes.js';
 
+
 //app config
 const app = express();
 const port = process.env.PORT || 4000;
