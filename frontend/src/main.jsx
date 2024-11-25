@@ -6,16 +6,19 @@ import { TokenProvider } from './context/tokenCotextProvider';
 import ScrollToTop from './components/scrollToTop.jsx';
 import { AppointmentsProvider } from './context/AppointmentsContextProvider.jsx';
 import { UserProvider } from './context/userContextProvider.jsx';
+import { DoctorsProvider } from './context/doctorsContextProvider';
 
 createRoot(document.getElementById('root')).render(
   <TokenProvider>
     <UserProvider>
-      <AppointmentsProvider>
-        <BrowserRouter>
-          <ScrollToTop />
-          <App />
-        </BrowserRouter>
-      </AppointmentsProvider>
+      <DoctorsProvider>
+        <AppointmentsProvider>
+          <BrowserRouter>
+            <ScrollToTop />
+            <App />
+          </BrowserRouter>
+        </AppointmentsProvider>
+      </DoctorsProvider>
     </UserProvider>
   </TokenProvider>
 );

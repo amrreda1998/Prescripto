@@ -1,13 +1,15 @@
-import { useState } from "react";
-import { assets, doctors } from "../assets/assets";
-import DoctorCard from "../components/HomePage/Sections/TopDoctorstoBookSection/DoctorCard";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useAppointments } from "../context/AppointmentsContext";
-import { useToken } from "./../context/tokenContext";
+import { useState } from 'react';
+import { assets} from '../assets/assets';
+import DoctorCard from '../components/HomePage/Sections/TopDoctorstoBookSection/DoctorCard';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useAppointments } from '../context/AppointmentsContext';
+import { useToken } from './../context/tokenContext';
+import { useDoctors } from '../context/doctorsContext';
 
 const BookAppointmentPage = () => {
   const location = useLocation();
-  const choosenDoctor = doctors.find(
+  const { allDoctors } = useDoctors();
+  const choosenDoctor = allDoctors.find(
     (doctor) => doctor._id === location.state?.id
   );
 
@@ -19,7 +21,7 @@ const BookAppointmentPage = () => {
 
   // Helper function to get the next 7 days starting from today
   const getNextSevenDays = () => {
-    const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const today = new Date();
 
     return Array.from({ length: 7 }, (_, index) => {
@@ -33,10 +35,10 @@ const BookAppointmentPage = () => {
     });
   };
 
-  const times = ["8:00 am", "10:00 am", "12:00 pm", "4:00 pm"];
+  const times = ['8:00 am', '10:00 am', '12:00 pm', '4:00 pm'];
 
   const AllRelatedDoctors = choosenDoctor
-    ? doctors.filter(
+    ? allDoctors.filter(
         (doctor) =>
           doctor.speciality === choosenDoctor.speciality &&
           doctor._id !== choosenDoctor._id
@@ -46,7 +48,7 @@ const BookAppointmentPage = () => {
   // Function to handle booking the appointment
   const handleBookAppointment = () => {
     if (!token) {
-      alert("Please Login First");
+      alert('Please Login First');
       return;
     }
     if (!choosenDoctor || !selectedDay || !selectedTime) return;
@@ -56,7 +58,7 @@ const BookAppointmentPage = () => {
       (appointment) => choosenDoctor.name === appointment.doctor.name
     );
     if (alreadyExist) {
-      console.log("Alreay exist");
+      console.log('Alreay exist');
       return;
     }
     const newAppointment = {
@@ -69,7 +71,7 @@ const BookAppointmentPage = () => {
       },
       date: selectedDay.fullDate, // Save full date
       time: selectedTime,
-      status: "Booked", // Status for appointment tracking
+      status: 'Booked', // Status for appointment tracking
     };
 
     setAppointments((prevAppointments) => [
@@ -80,7 +82,7 @@ const BookAppointmentPage = () => {
     // Reset selected day and time after booking
     setSelectedDay(null);
     setSelectedTime(null);
-    navigate("/myappointments");
+    navigate('/myappointments');
   };
 
   return (
@@ -132,8 +134,8 @@ const BookAppointmentPage = () => {
               onClick={() => setSelectedDay({ day, date, fullDate })}
               className={`${
                 selectedDay?.fullDate === fullDate
-                  ? "bg-[#5F6FFF] text-white"
-                  : "bg-white "
+                  ? 'bg-[#5F6FFF] text-white'
+                  : 'bg-white '
               } w-20 h-20 rounded-full border-2 border-[#5F6FFF] flex flex-col items-center justify-center transition duration-300`}
             >
               {day}
@@ -149,7 +151,7 @@ const BookAppointmentPage = () => {
               key={index}
               onClick={() => setSelectedTime(time)}
               className={`${
-                selectedTime === time ? "bg-[#5F6FFF] text-white" : "bg-white "
+                selectedTime === time ? 'bg-[#5F6FFF] text-white' : 'bg-white '
               } px-4 py-2 rounded-full border-2 border-[#5F6FFF] transition duration-300`}
             >
               {time}

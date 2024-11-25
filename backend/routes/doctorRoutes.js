@@ -13,6 +13,7 @@ doctorRouter.get('/', async (req, res) => {
     return res.status(200).send({
       success: true,
       message: 'Succefully Reterived Doctors Data',
+      doctors: allDoctors,
     });
   } catch (error) {
     console.error(error);

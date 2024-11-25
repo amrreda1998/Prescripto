@@ -11,7 +11,7 @@ const configureCloudinary = () => {
 export const uploadImage = async (filePath) => {
   try {
     const result = await cloudinary.uploader.upload(filePath, {
-      folder: 'Prescripto/doctors',
+      folder: 'Prescripto/users',
       use_filename: true, // Use the original file name
       unique_filename: false, // Avoid adding a unique suffix to the file name
     });

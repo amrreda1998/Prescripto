@@ -1,29 +1,35 @@
-import DoctorCard from "../components/HomePage/Sections/TopDoctorstoBookSection/DoctorCard";
-import { doctors, specialityData } from "./../assets/assets";
-import { useEffect, useState } from "react";
-import BackToTopButton from "./../components/BackToTopButton";
-import { useLocation } from "react-router-dom";
+/* eslint-disable react-hooks/exhaustive-deps */
+import DoctorCard from '../components/HomePage/Sections/TopDoctorstoBookSection/DoctorCard';
+import { specialityData } from './../assets/assets';
+import { useEffect, useState } from 'react';
+import BackToTopButton from './../components/BackToTopButton';
+import { useLocation } from 'react-router-dom';
+import { useDoctors } from './../context/doctorsContext';
 
 const AllDoctorsPage = () => {
   const location = useLocation(); // Access location object
-  const speciality = location.state || {speciality:"All Doctors"}; // Extract props from `state`
+  const speciality = location.state || { speciality: 'All Doctors' }; // Extract props from `state`
 
   const [activeFilter, setActiveFilter] = useState(speciality);
-  const [Doctors, setDoctors] = useState(doctors);
+  const [doctors, setDoctors] = useState([]);
+  const { allDoctors } = useDoctors();
 
   useEffect(() => {
-    handleFilter(speciality.speciality)
-  },[speciality.speciality]);
+    if (allDoctors) {
+      setDoctors(allDoctors);
+      handleFilter(speciality.speciality);
+    }
+  }, [speciality.speciality, allDoctors]);
 
   // Handle filtering doctors by speciality
   const handleFilter = (speciality) => {
-    if (speciality === "All Doctors") {
+    if (speciality === 'All Doctors') {
       setActiveFilter(speciality);
-      setDoctors(doctors);
+      setDoctors(allDoctors);
     } else {
       setActiveFilter(speciality);
       // Filtering doctors by speciality
-      const filteredDoctors = doctors.filter(
+      const filteredDoctors = allDoctors.filter(
         (doctor) => doctor.speciality === speciality
       );
       setDoctors(filteredDoctors);
@@ -38,12 +44,12 @@ const AllDoctorsPage = () => {
           <ul className="text-center space-y-4">
             <span className="font-bold text-lg">Filters</span>
             <li
-              className={`cursor-pointer p-2 text-center rounded transition-all duration-200 shadow-lg shadow-gray-300  ${
-                activeFilter === "All Doctors"
-                  ? "bg-[#5F6FFF] text-white"
-                  : "border  hover:bg-[#5F6FFF] hover:text-white"
+              className={`cursor-pointer p-2 text-center rounded transition-all duration-200 shadow-lg shadow-gray-300 ${
+                activeFilter === 'All Doctors'
+                  ? 'bg-[#5F6FFF] text-white'
+                  : 'border hover:bg-[#5F6FFF] hover:text-white'
               }`}
-              onClick={() => handleFilter("All Doctors")}
+              onClick={() => handleFilter('All Doctors')}
             >
               All Doctors
             </li>
@@ -52,8 +58,8 @@ const AllDoctorsPage = () => {
                 key={index}
                 className={`cursor-pointer p-2 text-center rounded transition-all duration-200 shadow-lg shadow-gray-300 ${
                   activeFilter === speciality
-                    ? "bg-[#5F6FFF] text-white"
-                    : "border  hover:bg-[#5F6FFF] hover:text-white"
+                    ? 'bg-[#5F6FFF] text-white'
+                    : 'border hover:bg-[#5F6FFF] hover:text-white'
                 }`}
                 onClick={() => handleFilter(speciality)}
               >
@@ -65,16 +71,23 @@ const AllDoctorsPage = () => {
 
         {/* Doctors Cards Section */}
         <div className="flex-1 flex flex-wrap gap-4 justify-center">
-          {Doctors.map(({ image, name, speciality, _id }) => (
-            <div key={_id} className="w-full md:w-1/5 flex justify-center">
-              <DoctorCard
-                image={image}
-                name={name}
-                speciality={speciality}
-                id={_id}
-              />
-            </div>
-          ))}
+          {doctors.length > 0 ? (
+            doctors.map(({ image, name, speciality, _id }) => (
+              <div
+                key={_id.toString()}
+                className="w-full md:w-1/5 flex justify-center"
+              >
+                <DoctorCard
+                  image={image}
+                  name={name}
+                  speciality={speciality}
+                  id={_id.toString()}
+                />
+              </div>
+            ))
+          ) : (
+            <p className="py-8 font-bold text-lg ">No doctors available</p>
+          )}
         </div>
       </div>
 
