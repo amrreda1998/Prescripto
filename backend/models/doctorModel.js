@@ -8,14 +8,17 @@ const addressSchema = new mongoose.Schema({
 });
 
 //TODO :
-// Define a sub-schema for Solts booked
-const slots_bookedSchema = new mongoose.Schema({});
+// Define a sub-schema for bookingSlots
+const bookingSlotSchema = new mongoose.Schema({
+  day: { type: String },
+  times: [String],
+});
 
 const doctorSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    // email: { type: String, required },
+    // password: { type: String ,required},
     image: { type: String, required: true },
     speciality: { type: String, required: true },
     degree: { type: String, required: true },
@@ -24,8 +27,7 @@ const doctorSchema = new mongoose.Schema(
     available: { type: Boolean, default: true },
     fees: { type: Number, required: true, min: 0 }, //prevent negative numbers in database
     address: { type: addressSchema, required: true },
-    date: { type: Number, required: true },
-    slots_booked: { type: Object, default: {} },
+    available_booking_solts: { type: [bookingSlotSchema], default: [] },
   },
   { minimize: false }
 );

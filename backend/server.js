@@ -5,6 +5,7 @@ import { mongoDbConnect } from './config/mongoDB.js';
 import configureCloudinary from './config/cloudinary.js';
 import adminRouter from './routes/adminRoutes.js';
 import userRouter from './routes/userRoutes.js';
+import { seedDoctors } from './utlis/seedDoctors.js';
 
 //app config
 const app = express();
@@ -15,6 +16,10 @@ configureCloudinary();
 //middlewares
 app.use(express.json());
 app.use(cors());
+
+//call seed function for doctors data
+
+seedDoctors();
 
 //App APIS
 app.use('/api/admin', adminRouter);
