@@ -29,6 +29,7 @@ export const AddAppointment = async (req, res) => {
       message: 'Failed to add Appointmet ,\n Internal server Error',
     });
   }
+
   return res
     .status(200)
     .send({ success: true, message: 'Appointment added successfully' });

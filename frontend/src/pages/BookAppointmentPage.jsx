@@ -5,6 +5,9 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useAppointments } from '../context/AppointmentsContext';
 import { useToken } from './../context/tokenContext';
 import { useDoctors } from '../context/doctorsContext';
+import { backendURL } from '../constants/backendURL';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from 'react-toastify';
 
 const BookAppointmentPage = () => {
   const location = useLocation();
@@ -12,7 +15,8 @@ const BookAppointmentPage = () => {
   const [selectedDay, setSelectedDay] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [availableTimes, setAvailableTimes] = useState([]);
-  const { appointments, setAppointments } = useAppointments();
+  const [isAppointmentAdded, setIsAppointmentAdded] = useState(false);
+  const { setAppointments } = useAppointments();
   const { token } = useToken();
   const navigate = useNavigate();
   const chosenDoctor = allDoctors.find(
@@ -78,6 +82,31 @@ const BookAppointmentPage = () => {
     }
   }, [selectedDay, chosenDoctor]);
 
+  useEffect(() => {
+    if (isAppointmentAdded) {
+      const newAppointment = {
+        doctor: {
+          id: chosenDoctor._id,
+          name: chosenDoctor.name,
+          image: chosenDoctor.image,
+          speciality: chosenDoctor.speciality,
+          address: chosenDoctor.address,
+        },
+        date: selectedDay.fullDate,
+        time: selectedTime,
+      };
+      setAppointments((prevAppointments) => [
+        ...prevAppointments,
+        newAppointment,
+      ]);
+
+      setTimeout(() => {
+        navigate('/myappointments');
+      }, 2000);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAppointmentAdded, navigate]);
+
   const allRelatedDoctors = chosenDoctor
     ? allDoctors.filter(
         (doctor) =>
@@ -85,6 +114,35 @@ const BookAppointmentPage = () => {
           doctor._id !== chosenDoctor._id
       )
     : [];
+
+  //function to add appointment to the database :
+  const addAppointmentDB = async (appointment) => {
+    try {
+      const response = await fetch(
+        `${backendURL}/api/appointments/user/add-appointment`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(appointment),
+        }
+      );
+      const { message } = await response.json();
+
+      if (!response.ok) {
+        setIsAppointmentAdded(false);
+        toast.error(message);
+      } else {
+        toast.success(message);
+        setIsAppointmentAdded(true);
+      }
+    } catch {
+      toast.error('Failed to Add Appointment');
+      setIsAppointmentAdded(false);
+    }
+  };
 
   // Function to handle booking the appointment
   const handleBookAppointment = () => {
@@ -94,33 +152,14 @@ const BookAppointmentPage = () => {
     }
     if (!chosenDoctor || !selectedDay || !selectedTime) return;
 
-    // Check existence of any appointment with the same doctor
-    const alreadyExist = appointments.find(
-      (appointment) => chosenDoctor.name === appointment.doctor.name
-    );
-    if (alreadyExist) {
-      console.log('Already exist');
-      return;
-    }
-    const newAppointment = {
-      
-      doctor: {
-        id: chosenDoctor._id,
-        name: chosenDoctor.name,
-        image: chosenDoctor.image,
-        speciality: chosenDoctor.speciality,
-        address: chosenDoctor.address,
-      },
-      date: selectedDay.fullDate, // Save full date
+    // build the appoinment object to send to the backend
+    const appointmentForDB = {
+      doctorId: chosenDoctor._id,
+      date: selectedDay.fullDate,
       time: selectedTime,
     };
-
-    setAppointments((prevAppointments) => [
-      ...prevAppointments,
-      newAppointment,
-    ]);
-
-    navigate('/myappointments');
+    // call the backend api to store the appointment in the database
+    addAppointmentDB(appointmentForDB);
   };
 
   return (
@@ -234,6 +273,7 @@ const BookAppointmentPage = () => {
           )}
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 };
