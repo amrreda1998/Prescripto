@@ -1,4 +1,5 @@
 import { appointmentModel } from './../../models/appointmentModel.js';
+import { doctorModel } from './../../models/doctorModel.js';
 
 export const AddAppointment = async (req, res) => {
   const userId = req.userId;
@@ -33,4 +34,42 @@ export const AddAppointment = async (req, res) => {
   return res
     .status(200)
     .send({ success: true, message: 'Appointment added successfully' });
+};
+
+// Helper function to reformat the appointment object for frontend
+const reformatedAppointment = async ({ doctorId, date, time, _id }) => {
+  // Get doctor data:
+  const doctor = await doctorModel.findById(doctorId);
+  if (!doctor) {
+    throw new Error('Error Finding Doctor Data');
+  }
+  const { name, image, speciality, address } = doctor;
+  // Return reformatted appointment object:
+  return { _id, doctor: { name, image, speciality, address }, date, time };
+};
+
+export const getUserAppointments = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const allAppointments = await appointmentModel.find({ userId });
+    if (allAppointments.length === 0) {
+      return res
+        .status(400)
+        .send({ success: false, message: 'No Appointments Found!' });
+    }
+
+    // Wait for all reformatted appointments to complete
+    const AllAppointmentsForUI = await Promise.all(
+      allAppointments.map((appointment) => reformatedAppointment(appointment))
+    );
+
+    return res
+      .status(200)
+      .send({ success: true, allAppointments: AllAppointmentsForUI });
+  } catch (error) {
+    console.error('Error fetching user appointments:', error);
+    return res
+      .status(500)
+      .send({ success: false, message: 'Internal Server Error' });
+  }
 };

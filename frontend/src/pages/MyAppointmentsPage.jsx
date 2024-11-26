@@ -4,6 +4,8 @@ import { CalendarIcon, MapPinIcon, UserIcon } from '@heroicons/react/24/solid'; 
 import { useState, useEffect } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const MyAppointmentsPage = () => {
   const { appointments, setAppointments } = useAppointments(); // Assuming you have setAppointments for state update
@@ -12,8 +14,8 @@ const MyAppointmentsPage = () => {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 600);
-  }, []);
+    }, 800);
+  });
 
   const handleCancelAppointment = (DoctorId) => {
     const updatedAppointments = appointments.filter(
@@ -53,10 +55,7 @@ const MyAppointmentsPage = () => {
               ))
             : appointments.map((appointment) => (
                 <div
-                  key={
-                    appointment._id ||
-                    `${appointment.doctor.id}-${appointment.date}`
-                  }
+                  key={appointment._id}
                   className="border border-gray-200 rounded-lg shadow-lg p-6 flex flex-col lg:flex-row items-start lg:items-center lg:justify-between transition duration-300 hover:shadow-xl bg-white"
                 >
                   <div className="flex items-center gap-5 w-full lg:w-auto flex-col lg:flex-row">
@@ -121,6 +120,7 @@ const MyAppointmentsPage = () => {
           No appointments found.
         </p>
       )}
+      <ToastContainer autoClose={500} />
     </div>
   );
 };
