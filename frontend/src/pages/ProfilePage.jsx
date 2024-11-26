@@ -1,23 +1,30 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { backendURL } from './../constants/backendURL';
 import { useToken } from './../context/tokenContext';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { CameraIcon } from '@heroicons/react/24/outline'; // v2 icon import path
 import { useUser } from '../context/userContext.js';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const ProfilePage = () => {
   const { userData, setUserData } = useUser();
   const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(true); // Loading state
   const { token } = useToken();
 
-  // Handle changes in the input fields dynamically
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    },600);
+  }, []);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  // Function to handle saving user info updates
   const handleSave = async () => {
     try {
       const response = await fetch(`${backendURL}/api/user/`, {
@@ -34,8 +41,8 @@ const ProfilePage = () => {
       }
 
       const { userInfo, message } = await response.json();
-      setUserData(userInfo); // Update the state with the updated data
-      setIsEditing(false); // Exit the editing mode
+      setUserData(userInfo);
+      setIsEditing(false);
 
       toast.success(message || 'Profile updated successfully!');
     } catch (error) {
@@ -44,13 +51,11 @@ const ProfilePage = () => {
     }
   };
 
-  // Function to handle image upload
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      // Create a FormData object to send the file to the backend
       const formData = new FormData();
-      formData.append('profileImage', file); // 'profileImage' is the field name expected by Multer
+      formData.append('profileImage', file);
 
       try {
         const response = await fetch(
@@ -70,10 +75,9 @@ const ProfilePage = () => {
 
         const data = await response.json();
 
-        // Update the user data with the new image URL returned from the backend
         setUserData((prevData) => ({
           ...prevData,
-          image: data.imageUrl, // Cloudinary URL of the uploaded image
+          image: data.imageUrl,
         }));
 
         toast.success('Profile image updated successfully');
@@ -84,7 +88,6 @@ const ProfilePage = () => {
     }
   };
 
-  // Fields to display
   const fieldsToDisplay = [
     'name',
     'email',
@@ -97,27 +100,31 @@ const ProfilePage = () => {
 
   return (
     <div className="p-8 min-h-screen">
+      <ToastContainer />
       {/* Profile Header */}
       <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center space-y-4 md:flex-row md:space-x-6 md:p-10">
         <div className="relative">
-          <div className="flex items-center justify-center w-32 h-32  rounded-full bg-[#5F6FFF] text-white text-6xl font-bold">
-            {userData.image ? (
+          <div className="flex items-center justify-center w-32 h-32 rounded-full bg-[#5F6FFF] text-white text-6xl font-bold">
+            {loading ? (
+              <Skeleton circle={true} height={128} width={128} />
+            ) : userData.image ? (
               <img
                 src={userData.image}
                 alt="Profile"
-                className="w-32 h-36  object-cover rounded"
+                className="w-32 h-36 object-cover rounded"
               />
             ) : (
               userData.name.charAt(0).toUpperCase()
             )}
           </div>
-          {/* Camera icon to trigger image upload */}
-          <label
-            htmlFor="file-upload"
-            className="absolute -bottom-2 right-0 p-2 bg-[#5F6FFF] rounded-full cursor-pointer"
-          >
-            <CameraIcon className="w-6 h-6 text-white" />
-          </label>
+          {!loading && (
+            <label
+              htmlFor="file-upload"
+              className="absolute -bottom-2 right-0 p-2 bg-[#5F6FFF] rounded-full cursor-pointer"
+            >
+              <CameraIcon className="w-6 h-6 text-white" />
+            </label>
+          )}
           <input
             type="file"
             id="file-upload"
@@ -127,8 +134,12 @@ const ProfilePage = () => {
           />
         </div>
         <div className="text-center md:text-left">
-          <h2 className="text-2xl font-semibold">{userData.name}</h2>
-          <p className="text-gray-600">{userData.bio}</p>
+          <h2 className="text-2xl font-semibold">
+            {loading ? <Skeleton width={150} /> : userData.name}
+          </h2>
+          <p className="text-gray-600">
+            {loading ? <Skeleton width={200} count={2} /> : userData.bio}
+          </p>
         </div>
       </div>
 
@@ -144,7 +155,9 @@ const ProfilePage = () => {
                 <strong>{`${
                   field.charAt(0).toUpperCase() + field.slice(1)
                 }:  `}</strong>
-                {isEditing ? (
+                {loading ? (
+                  <Skeleton width={200} />
+                ) : isEditing ? (
                   field === 'gender' ? (
                     <select
                       name={field}
@@ -198,9 +211,6 @@ const ProfilePage = () => {
           {isEditing ? 'Save' : 'Edit Profile'}
         </button>
       </div>
-
-      {/* Toast Container for notifications */}
-      <ToastContainer />
     </div>
   );
 };

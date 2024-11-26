@@ -1,5 +1,4 @@
 import { Routes, Route } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
 import ContactsPage from './pages/ContactsPage';
@@ -12,24 +11,6 @@ import ProfilePage from './pages/ProfilePage';
 import BookAppointmentPage from './pages/BookAppointmentPage';
 
 export const App = () => {
-  const [isLoading, setIsLoading] = useState(true); // Loading state
-
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 600); // Fetch user data when the component mounts
-  }, []);
-
-  // Loading UI component
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-t-4 border-blue-500"></div>{' '}
-        {/* Loading spinner */}
-      </div>
-    );
-  }
-
   return (
     <div className="mx-4 sm:mx-[10%]">
       <Navbar />

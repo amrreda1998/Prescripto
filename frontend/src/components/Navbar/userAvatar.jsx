@@ -1,12 +1,15 @@
 import { useNavigate } from 'react-router-dom';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useToken } from '../../context/tokenContext';
 import { useUser } from './../../context/userContext';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const UserAvatar = () => {
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const { setToken } = useToken(); // token for authorization
+  const [loading, setLoading] = useState(true); // Loading state
+  const { setToken } = useToken(); // Token for authorization
   const { userData } = useUser();
 
   const dropdownRef = useRef(null); // Ref to the dropdown menu
@@ -14,10 +17,14 @@ const UserAvatar = () => {
 
   let hideTimeout;
 
-  // Handle hover (on large screens) and click (on small screens)
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 600);
+  }, []);
+
   const handleMouseEnter = () => {
     if (window.innerWidth >= 768) {
-      // Only apply hover for large screens
       clearTimeout(hideTimeout); // Clear any previous timeout
       setIsDropdownOpen(true);
     }
@@ -38,7 +45,6 @@ const UserAvatar = () => {
 
   const handleClick = () => {
     if (window.innerWidth < 768) {
-      // Only toggle dropdown on small screens
       setIsDropdownOpen((prev) => !prev);
     }
   };
@@ -51,7 +57,9 @@ const UserAvatar = () => {
   return (
     <div className="relative inline-block">
       {/* Avatar image */}
-      {userData.name !== 'User' ? (
+      {loading ? (
+        <Skeleton circle={true} height={64} width={64} />
+      ) : userData.name !== 'User' ? (
         <div
           className="w-16 h-16 rounded-full overflow-hidden border-4 border-[#5F6FFF] shadow-lg relative cursor-pointer"
           onClick={handleClick} // Handle click for small screens
@@ -63,11 +71,10 @@ const UserAvatar = () => {
               ref={avatarRef}
               src={userData.image}
               alt="User Avatar"
-              className="absolute top-4 left-1/2 transform -translate-x-1/2 scale-150 "
+              className="absolute top-4 left-1/2 transform -translate-x-1/2 scale-150"
             />
           ) : (
-            <span className="flex  justify-center w-full h-full    bg-[#5F6FFF] text-white text-5xl font-bold">
-              {' '}
+            <span className="flex justify-center w-full h-full bg-[#5F6FFF] text-white text-5xl font-bold">
               {userData.name.charAt(0).toUpperCase()}
             </span>
           )}
@@ -99,9 +106,9 @@ const UserAvatar = () => {
             </li>
             <li
               onClick={() => {
-                //remove the token from the local storage
+                // Remove the token from local storage
                 localStorage.removeItem('userToken');
-                //reset the token
+                // Reset the token
                 setToken('');
                 window.location.replace('/login'); // Optionally redirect after logout
               }}

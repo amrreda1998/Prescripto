@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react';
 import BackToTopButton from './../components/BackToTopButton';
 import { useLocation } from 'react-router-dom';
 import { useDoctors } from './../context/doctorsContext';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const AllDoctorsPage = () => {
   const location = useLocation(); // Access location object
@@ -12,12 +14,14 @@ const AllDoctorsPage = () => {
 
   const [activeFilter, setActiveFilter] = useState(speciality);
   const [doctors, setDoctors] = useState([]);
+  const [loading, setLoading] = useState(true); // Loading state
   const { allDoctors } = useDoctors();
 
   useEffect(() => {
     if (allDoctors) {
       setDoctors(allDoctors);
       handleFilter(speciality.speciality);
+      setTimeout(() => { setLoading(false); }, 600);
     }
   }, [speciality.speciality, allDoctors]);
 
@@ -71,7 +75,14 @@ const AllDoctorsPage = () => {
 
         {/* Doctors Cards Section */}
         <div className="flex-1 flex flex-wrap gap-4 justify-center">
-          {doctors.length > 0 ? (
+          {loading ? (
+            // Show skeletons while loading
+            Array.from({ length: 5 }).map((_, index) => (
+              <div key={index} className="w-full md:w-1/5 flex justify-center">
+                <Skeleton height={200} width={150} />
+              </div>
+            ))
+          ) : doctors.length > 0 ? (
             doctors.map(({ image, name, speciality, _id }) => (
               <div
                 key={_id.toString()}

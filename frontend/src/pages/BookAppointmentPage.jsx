@@ -102,7 +102,7 @@ const BookAppointmentPage = () => {
 
       setTimeout(() => {
         navigate('/myappointments');
-      }, 2000);
+      }, 600);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAppointmentAdded, navigate]);
