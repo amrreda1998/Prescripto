@@ -1,8 +1,10 @@
-import { useNavigate } from "react-router-dom";
-import { assets } from "./../../../assets/assets";
+import { useNavigate } from 'react-router-dom';
+import { assets } from './../../../assets/assets';
+import { useToken } from './../../../context/tokenContext';
 
 const BannerSection = () => {
   const navigate = useNavigate();
+  const { token } = useToken();
 
   return (
     <div className="relative flex items-center justify-between bg-[#5F6FFF] text-white rounded px-4 h-72 mx-5 my-10 overflow-visible">
@@ -13,19 +15,23 @@ const BannerSection = () => {
           <br />
           With 100+ Trusted Doctors
         </p>
-        <button
-          className="flex items-center md:text-lg text-xs bg-white text-black font-semibold py-3 px-4 rounded-full mt-4 hover:bg-gray-200 h-11"
-          onClick={() => {
-            navigate("./signup");
-          }}
-        >
-          Create An Account
-          <img
-            src={assets.arrow_icon}
-            alt="Arrow Icon"
-            className="w-3 h-3 ml-3"
-          />
-        </button>
+        {token ? (
+          <></>
+        ) : (
+          <button
+            className="flex items-center md:text-lg text-xs bg-white text-black font-semibold py-3 px-4 rounded-full mt-4 hover:bg-gray-200 h-11"
+            onClick={() => {
+              navigate('./signup');
+            }}
+          >
+            Create An Account
+            <img
+              src={assets.arrow_icon}
+              alt="Arrow Icon"
+              className="w-3 h-3 ml-3"
+            />
+          </button>
+        )}
       </div>
 
       {/* Right side */}
