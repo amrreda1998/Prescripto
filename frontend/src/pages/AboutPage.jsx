@@ -1,5 +1,5 @@
-import { assets } from "../assets/assets";
-import Footer from "../components/HomePage/Footer";
+import { assets } from '../assets/assets';
+import Footer from '../components/HomePage/Footer';
 
 const AboutPage = () => {
   return (
@@ -43,7 +43,7 @@ const AboutPage = () => {
             </p>
           </article>
         </section>
-        
+
         {/* Why Choose Us Section */}
         <section>
           <div className="text-center font-bold underline mt-6 mb-7">

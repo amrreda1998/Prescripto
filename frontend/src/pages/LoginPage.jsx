@@ -45,7 +45,7 @@ const LoginPage = () => {
         localStorage.setItem('userToken', data.token);
         //set the token to the userToken :
         setToken(data.token);
-        setTimeout(() => navigate('/'), 1000);
+        setTimeout(() => navigate('/'), 700);
         // Redirect after success
       } else {
         toast.error(data.message || 'Something went wrong. Please try again.');

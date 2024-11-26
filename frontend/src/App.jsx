@@ -17,7 +17,7 @@ export const App = () => {
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
-    }, 500); // Fetch user data when the component mounts
+    }, 600); // Fetch user data when the component mounts
   }, []);
 
   // Loading UI component
