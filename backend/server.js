@@ -7,7 +7,7 @@ import adminRouter from './routes/adminRoutes.js';
 import userRouter from './routes/userRoutes.js';
 import { seedDoctors } from './utlis/seedDoctors.js';
 import doctorRouter from './routes/doctorRoutes.js';
-
+import appointmentRouter from './routes/appointmentRoutes.js';
 
 //app config
 const app = express();
@@ -27,6 +27,7 @@ seedDoctors();
 app.use('/api/admin', adminRouter);
 app.use('/api/user', userRouter);
 app.use('/api/doctors', doctorRouter);
+app.use('/api/appointments', appointmentRouter);
 
 //testing server
 app.get('/test', (req, res) => {

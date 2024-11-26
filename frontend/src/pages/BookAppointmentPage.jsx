@@ -103,6 +103,7 @@ const BookAppointmentPage = () => {
       return;
     }
     const newAppointment = {
+      
       doctor: {
         id: chosenDoctor._id,
         name: chosenDoctor.name,
@@ -112,7 +113,6 @@ const BookAppointmentPage = () => {
       },
       date: selectedDay.fullDate, // Save full date
       time: selectedTime,
-      status: 'Booked', // Status for appointment tracking
     };
 
     setAppointments((prevAppointments) => [

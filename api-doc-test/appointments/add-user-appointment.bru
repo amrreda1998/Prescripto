@@ -1,0 +1,23 @@
+meta {
+  name: add-user-appointment
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:4000/api/appointments/user/add-appointment
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NDM3MDY5NGZhNDYyZDMxZTE5M2UzNyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzMyNjI1MDQ2fQ.TGdkOjOge7HOgVdWQfiIpLfbHFUGXEWsbiIzpPtTnBI
+}
+
+body:json {
+  {
+    "doctorId":"22",
+    "date":"aaa",
+    "time":"bbb"
+  }
+}
