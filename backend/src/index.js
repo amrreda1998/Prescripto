@@ -18,7 +18,7 @@ configureCloudinary();
 //middlewares
 app.use(
   cors({
-    origin: 'https://prescripto-book-doctors.vercel.app/',
+    origin: 'https://prescripto-book-doctors.vercel.app',
     credentials: true,
   })
 );
