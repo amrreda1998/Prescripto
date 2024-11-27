@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "type": "module",
   "description": "Prescripto-backend",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon server.js",
-    "start": "node server.js",
-    "lint": "eslint ."
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "lint": "eslint .",
+    "vercel-build": "echo hello"
   },
   "author": "Amr Reda Mohamed",
   "license": "ISC",

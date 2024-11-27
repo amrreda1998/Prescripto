@@ -17,12 +17,7 @@ configureCloudinary();
 
 //middlewares
 app.use(express.json());
-app.use(
-  cors({
-    origin: '*', // Replace with your frontend URL
-    credentials: true, // Allow cookies to be sent
-  })
-);
+app.use(cors());
 
 //call seed function for doctors data
 
