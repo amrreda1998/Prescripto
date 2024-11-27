@@ -16,6 +16,7 @@ const BookAppointmentPage = () => {
   const [selectedTime, setSelectedTime] = useState(null);
   const [availableTimes, setAvailableTimes] = useState([]);
   const [isAppointmentAdded, setIsAppointmentAdded] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // New loading state
   const { setAppointments } = useAppointments();
   const { token } = useToken();
   const navigate = useNavigate();
@@ -101,6 +102,7 @@ const BookAppointmentPage = () => {
 
   //function to add appointment to the database :
   const addAppointmentDB = async (appointment) => {
+    setIsLoading(true); // Start loading
     try {
       const response = await fetch(
         `${backendURL}/api/appointments/user/add-appointment`,
@@ -126,6 +128,8 @@ const BookAppointmentPage = () => {
     } catch {
       toast.error('Failed to Add Appointment');
       setIsAppointmentAdded(false);
+    } finally {
+      setIsLoading(false); // End loading
     }
   };
 
@@ -137,13 +141,13 @@ const BookAppointmentPage = () => {
     }
     if (!chosenDoctor || !selectedDay || !selectedTime) return;
 
-    // build the appoinment object to send to the backend
+    // build the appointment object to send to the backend
     const appointmentForDB = {
       doctorId: chosenDoctor._id,
       date: selectedDay.fullDate,
       time: selectedTime,
     };
-    // call the backend api to store the appointment in the database
+    // call the backend API to store the appointment in the database
     addAppointmentDB(appointmentForDB);
   };
 
@@ -226,10 +230,10 @@ const BookAppointmentPage = () => {
         <div className="text-center my-10">
           <button
             className="bg-[#5F6FFF] shadow-lg hover:shadow-gray-500 p-4 text-white rounded-full"
-            disabled={!selectedDay || !selectedTime}
+            disabled={!selectedDay || !selectedTime || isLoading} // Disable button if loading
             onClick={handleBookAppointment}
           >
-            Book an Appointment
+            {isLoading ? 'Booking...' : 'Book an Appointment'}
           </button>
         </div>
       </div>

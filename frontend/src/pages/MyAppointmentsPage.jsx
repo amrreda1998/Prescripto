@@ -12,34 +12,42 @@ import { backendURL } from './../constants/backendURL';
 const MyAppointmentsPage = () => {
   const { appointments, setAppointments } = useAppointments(); // Assuming you have setAppointments for state update
   const [loading, setLoading] = useState(true); // Loading state
+  const [loadingAppointments, setLoadingAppointments] = useState([]); // Track loading state for each appointment
   const { token } = useToken();
 
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
     }, 800);
-  });
+  }, []);
 
   const handleCancelAppointment = async (_id) => {
-    //backend-cancellation :
-    const response = await fetch(
-      `${backendURL}/api/appointments/user/delete-appointment`,
-      {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ appointmentId: _id }),
+    setLoadingAppointments((prev) => [...prev, _id]); // Add appointment ID to loading state
+
+    try {
+      const response = await fetch(
+        `${backendURL}/api/appointments/user/delete-appointment`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ appointmentId: _id }),
+        }
+      );
+      const { message, updatedAppointments } = await response.json();
+      if (!response.ok) {
+        toast.error(message);
+        return;
       }
-    );
-    const { message, updatedAppointments } = await response.json();
-    if (!response.ok) {
-      toast.error(message);
-      return;
+      toast.success('Appointment has been successfully deleted');
+      setAppointments(updatedAppointments); // Update state with the filtered appointments
+    } catch {
+      toast.error('Failed to cancel appointment');
+    } finally {
+      setLoadingAppointments((prev) => prev.filter((id) => id !== _id)); // Remove appointment ID from loading state
     }
-    toast.success('Appointment has been succefully Deleted');
-    setAppointments(updatedAppointments); // Update state with the filtered appointments
   };
 
   return (
@@ -124,8 +132,9 @@ const MyAppointmentsPage = () => {
                     <button
                       className="w-full px-8 py-2 bg-red-500 text-white rounded-full shadow-lg hover:bg-red-600 transition"
                       onClick={() => handleCancelAppointment(appointment._id)}
+                      disabled={loadingAppointments.includes(appointment._id)} // Disable button if loading
                     >
-                      Cancel Appointment
+                      {loadingAppointments.includes(appointment._id) ? 'Cancelling...' : 'Cancel Appointment'}
                     </button>
                   </div>
                 </div>
