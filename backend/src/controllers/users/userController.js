@@ -21,6 +21,14 @@ export const userRegister = async (req, res) => {
       .send({ success: false, message: 'Invalid User Data' });
   }
 
+  //check if the user already existed :
+  const emailExist = await userModel.find({ email });
+  if (emailExist) {
+    return res
+      .status(400)
+      .send({ success: false, message: 'Email Already Existed' });
+  }
+
   //hashing the password
   const hashedPassword = await bcrypt.hash(password, 10);
 
