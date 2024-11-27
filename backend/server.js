@@ -17,7 +17,12 @@ configureCloudinary();
 
 //middlewares
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: '*', // Replace with your frontend URL
+    credentials: true, // Allow cookies to be sent
+  })
+);
 
 //call seed function for doctors data
 
@@ -38,4 +43,4 @@ app.listen(port, () => {
   console.log(`Server is working on port ${port} ....`);
 });
 
-export default app
+export default app;
