@@ -16,27 +16,15 @@ mongoDbConnect();
 configureCloudinary();
 
 // Middlewares
-const allowedOrigins = ['https://prescripto-book-doctors.vercel.app'];
 app.use(
   cors({
-    origin: function (origin, callback) {
-      // Allow requests with no origin (like mobile apps, curl requests)
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) === -1) {
-        const msg =
-          'The CORS policy for this site does not allow access from the specified Origin.';
-        return callback(new Error(msg), false);
-      }
-      return callback(null, true);
-    },
+    origin: '*', // Allow all origins
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    credentials: true,
+    credentials: true, // If you still want to include credentials
   })
 );
-app.options('*', cors()); // Enable preflight for all routes
 
 app.use(express.json());
-
 
 //call seed function for doctors data
 seedDoctors();
