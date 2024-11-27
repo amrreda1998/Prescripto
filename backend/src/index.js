@@ -16,7 +16,7 @@ mongoDbConnect();
 configureCloudinary();
 
 // Middlewares
-const allowedOrigins = ['*'];
+const allowedOrigins = ['https://prescripto-book-doctors.vercel.app'];
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -29,11 +29,14 @@ app.use(
       }
       return callback(null, true);
     },
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true,
   })
 );
+app.options('*', cors()); // Enable preflight for all routes
 
 app.use(express.json());
+
 
 //call seed function for doctors data
 seedDoctors();
