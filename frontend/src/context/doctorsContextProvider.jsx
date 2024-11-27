@@ -1,4 +1,3 @@
-// DoctorsProvider.jsx
 import DoctorsContext from './doctorsContext.js';
 import { useState, useEffect } from 'react';
 import { backendURL } from './../constants/backendURL';
@@ -6,6 +5,7 @@ import { backendURL } from './../constants/backendURL';
 // eslint-disable-next-line react/prop-types
 export const DoctorsProvider = ({ children }) => {
   const [allDoctors, setAllDoctors] = useState([]);
+  const [loading, setLoading] = useState(true); // Add loading state
 
   // Function to fetch doctors data from API
   const fetchData = async () => {
@@ -22,6 +22,8 @@ export const DoctorsProvider = ({ children }) => {
       setAllDoctors(doctors);
     } catch (error) {
       console.error('Error fetching data:', error.message);
+    } finally {
+      setLoading(false); // Set loading to false after fetch completes
     }
   };
 
@@ -30,7 +32,7 @@ export const DoctorsProvider = ({ children }) => {
   }, []);
 
   return (
-    <DoctorsContext.Provider value={{ allDoctors, setAllDoctors }}>
+    <DoctorsContext.Provider value={{ allDoctors, loading, setAllDoctors }}>
       {children}
     </DoctorsContext.Provider>
   );

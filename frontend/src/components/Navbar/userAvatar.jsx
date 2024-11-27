@@ -110,7 +110,7 @@ const UserAvatar = () => {
                 localStorage.removeItem('userToken');
                 // Reset the token
                 setToken('');
-                window.location.replace('/login'); // Optionally redirect after logout
+                navigate('/login'); // Optionally redirect after logout
               }}
               className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
             >
