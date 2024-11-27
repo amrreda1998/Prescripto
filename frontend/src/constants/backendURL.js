@@ -1,1 +1,1 @@
-export const backendURL = 'http://localhost:4000';
+export const backendURL = 'https://prescripto-backend-phi.vercel.app/';
