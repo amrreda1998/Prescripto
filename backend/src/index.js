@@ -16,7 +16,7 @@ mongoDbConnect();
 configureCloudinary();
 
 // Middlewares
-const allowedOrigins = ['https://prescripto-book-doctors.vercel.app'];
+const allowedOrigins = ['*'];
 app.use(
   cors({
     origin: function (origin, callback) {
