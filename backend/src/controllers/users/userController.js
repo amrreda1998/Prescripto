@@ -22,7 +22,7 @@ export const userRegister = async (req, res) => {
   }
 
   //check if the user already existed :
-  const emailExist = await userModel.find({ email });
+  const emailExist = await userModel.findOne({ email });
   if (emailExist) {
     return res
       .status(400)
