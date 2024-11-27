@@ -1,13 +1,13 @@
 import express from 'express';
 import cors from 'cors';
 import 'dotenv/config';
-import { mongoDbConnect } from './config/mongoDB.js';
-import configureCloudinary from './config/cloudinary.js';
-import adminRouter from './routes/adminRoutes.js';
-import userRouter from './routes/userRoutes.js';
-import { seedDoctors } from './utlis/seedDoctors.js';
-import doctorRouter from './routes/doctorRoutes.js';
-import appointmentRouter from './routes/appointmentRoutes.js';
+import { mongoDbConnect } from './src/config/mongoDB.js';
+import configureCloudinary from './src/config/cloudinary.js';
+import adminRouter from './src/routes/adminRoutes.js';
+import userRouter from './src/routes/userRoutes.js';
+import { seedDoctors } from './src/utlis/seedDoctors.js';
+import doctorRouter from './src/routes/doctorRoutes.js';
+import appointmentRouter from './src/routes/appointmentRoutes.js';
 
 //app config
 const app = express();
