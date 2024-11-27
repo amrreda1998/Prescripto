@@ -35,7 +35,7 @@ app.use('/api/doctors', doctorRouter);
 app.use('/api/appointments', appointmentRouter);
 
 //testing server
-app.get('/test', (req, res) => {
+app.get('/', (req, res) => {
   res.send(`Server is working .. ;)`);
 });
 
