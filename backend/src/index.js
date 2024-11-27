@@ -19,7 +19,7 @@ configureCloudinary();
 app.use(express.json());
 app.use(
   cors({
-    origin: 'https://prescripto-book-doctors.vercel.app/', // Replace with your frontend URL
+    origin: '*', // Replace with your frontend URL
     credentials: true, // Allow cookies to be sent
   })
 );
