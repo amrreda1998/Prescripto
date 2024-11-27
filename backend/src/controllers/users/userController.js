@@ -62,37 +62,46 @@ export const userRegister = async (req, res) => {
 export const userLogin = async (req, res) => {
   const { email, password } = req.body;
 
-  //validate email and password :
+  // Validate email and password
   if (!email || !password) {
     return res
       .status(400)
-      .send({ success: true, message: 'Invalid Email or Password' });
-  }
-
-  //Check if the email  exists in the database or not :
-  const userData = await userModel.findOne({ email });
-
-  if (!userData) {
-    return res
-      .status(400)
       .send({ success: false, message: 'Invalid Email or Password' });
   }
 
-  //validate the password :
-  const isValidPassword = await validatePassword(password, userData.password);
-  if (!isValidPassword) {
-    return res
-      .status(400)
-      .send({ success: false, message: 'Invalid Email or Password' });
-  }
+  try {
+    // Check if the email exists in the database or not
+    const userData = await userModel.findOne({ email });
 
-  //generate a user token
-  const userToken = generateToken(userData._id.toString(), 'user');
-  //return the token in response
-  return res
-    .status(200)
-    .send({ success: true, token: userToken, userName: userData.name });
+    if (!userData) {
+      return res
+        .status(400)
+        .send({ success: false, message: 'Invalid Email or Password' });
+    }
+
+    // Validate the password
+    const isValidPassword = await validatePassword(password, userData.password);
+    if (!isValidPassword) {
+      return res
+        .status(400)
+        .send({ success: false, message: 'Invalid Email or Password' });
+    }
+
+    // Generate a user token
+    const userToken = generateToken(userData._id.toString(), 'user');
+
+    // Return the token in response
+    return res.status(200).send({
+      success: true,
+      message: 'Login successful',
+      data: { token: userToken, userName: userData.name },
+    });
+  } catch (error) {
+    console.error('Error during login:', error);
+    return res.status(500).send({ success: false, message: 'Internal Server Error' });
+  }
 };
+
 
 export const getUserInfo = async (req, res) => {
   try {

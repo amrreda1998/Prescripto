@@ -37,7 +37,7 @@ const LoginPage = () => {
         }),
       });
 
-      const data = await response.json();
+      const { message, data } = await response.json();
 
       if (response.ok) {
         toast.success(`Welcome ${data.userName}`);
@@ -48,7 +48,7 @@ const LoginPage = () => {
         setTimeout(() => navigate('/'), 700);
         // Redirect after success
       } else {
-        toast.error(data.message || 'Something went wrong. Please try again.');
+        toast.error(message || 'Something went wrong. Please try again.');
       }
     } catch (error) {
       console.error('Error during registration:', error);
