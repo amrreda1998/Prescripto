@@ -1,10 +1,10 @@
 // LoginPage.jsx
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { backendURL } from '../constants/backendURL';
+import { backendURL } from '../constants/backendURL.js';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast, ToastContainer } from 'react-toastify';
-import { useToken } from '../context/tokenContext';
+import { useToken } from '../context/tokenContext.js';
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
