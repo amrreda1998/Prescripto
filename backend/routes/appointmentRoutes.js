@@ -1,7 +1,7 @@
 import express from 'express';
 
 import jwtValidator from '../middlewares/jwtValidator.js';
-import { AddAppointment, getUserAppointments } from '../controllers/appointments/appointmentController.js';
+import { AddAppointment, deleteAppointment, getUserAppointments } from '../controllers/appointments/appointmentController.js';
 
 const appointmentRouter = express.Router();
 
@@ -16,9 +16,9 @@ appointmentRouter.post(
 );
 
 //Delete USER Appointment API
-// appointmentRouter.delete(
-//   '/user/delete-appointment',
-//   jwtValidator(['user']),
-//   deleteAppointment
-// );
+appointmentRouter.delete(
+  '/user/delete-appointment',
+  jwtValidator(['user']),
+  deleteAppointment
+);
 export default appointmentRouter;

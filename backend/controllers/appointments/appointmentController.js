@@ -30,10 +30,20 @@ export const AddAppointment = async (req, res) => {
       message: 'Failed to add Appointmet ,\n Internal server Error',
     });
   }
+  const updatedAppointments = await appointmentModel.find({ userId });
+
+  // Wait for all reformatted appointments to complete
+  const updatedAppointmentsForUI = await Promise.all(
+    updatedAppointments.map((appointment) => reformatedAppointment(appointment))
+  );
 
   return res
     .status(200)
-    .send({ success: true, message: 'Appointment added successfully' });
+    .send({
+      success: true,
+      message: 'Appointment added successfully',
+      updatedAppointments:updatedAppointmentsForUI,
+    });
 };
 
 // Helper function to reformat the appointment object for frontend
@@ -54,7 +64,7 @@ export const getUserAppointments = async (req, res) => {
     const allAppointments = await appointmentModel.find({ userId });
     if (allAppointments.length === 0) {
       return res
-        .status(400)
+        .status(404)
         .send({ success: false, message: 'No Appointments Found!' });
     }
 
@@ -71,5 +81,42 @@ export const getUserAppointments = async (req, res) => {
     return res
       .status(500)
       .send({ success: false, message: 'Internal Server Error' });
+  }
+};
+
+export const deleteAppointment = async (req, res) => {
+  try {
+    const { appointmentId } = req.body; // Assuming the appointment ID is passed in the request body
+    const userId = req.userId; // Extract the user ID from the validated JWT token
+    const appointment = await appointmentModel.findOneAndDelete({
+      _id: appointmentId,
+      userId: userId,
+    });
+
+    if (!appointment) {
+      return res.status(404).send({
+        success: false,
+        message: 'Appointment not found ',
+      });
+    }
+
+    const updatedAppointments = await appointmentModel.find({ userId });
+
+    // Wait for all reformatted appointments to complete
+    const updatedAppointmentsForUI = await Promise.all(
+      updatedAppointments.map((appointment) =>
+        reformatedAppointment(appointment)
+      )
+    );
+
+    return res.status(200).send({
+      success: true,
+      message: 'Appointment deleted successfully',
+      updatedAppointments: updatedAppointmentsForUI,
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .send({ success: false, message: 'Internal server error' });
   }
 };

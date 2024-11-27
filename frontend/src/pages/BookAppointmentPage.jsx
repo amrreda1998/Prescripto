@@ -84,25 +84,9 @@ const BookAppointmentPage = () => {
 
   useEffect(() => {
     if (isAppointmentAdded) {
-      const newAppointment = {
-        doctor: {
-          id: chosenDoctor._id,
-          name: chosenDoctor.name,
-          image: chosenDoctor.image,
-          speciality: chosenDoctor.speciality,
-          address: chosenDoctor.address,
-        },
-        date: selectedDay.fullDate,
-        time: selectedTime,
-      };
-      setAppointments((prevAppointments) => [
-        ...prevAppointments,
-        newAppointment,
-      ]);
-
       setTimeout(() => {
         navigate('/myappointments');
-      }, 1000);
+      }, 700);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAppointmentAdded, navigate]);
@@ -129,7 +113,7 @@ const BookAppointmentPage = () => {
           body: JSON.stringify(appointment),
         }
       );
-      const { message } = await response.json();
+      const { message, updatedAppointments } = await response.json();
 
       if (!response.ok) {
         setIsAppointmentAdded(false);
@@ -137,6 +121,7 @@ const BookAppointmentPage = () => {
       } else {
         toast.success(message);
         setIsAppointmentAdded(true);
+        setAppointments(updatedAppointments);
       }
     } catch {
       toast.error('Failed to Add Appointment');
@@ -273,7 +258,7 @@ const BookAppointmentPage = () => {
           )}
         </div>
       </div>
-      <ToastContainer />
+      <ToastContainer autoClose={500}/>
     </>
   );
 };

@@ -4,12 +4,15 @@ import { CalendarIcon, MapPinIcon, UserIcon } from '@heroicons/react/24/solid'; 
 import { useState, useEffect } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useToken } from '../context/tokenContext';
+import { backendURL } from './../constants/backendURL';
 
 const MyAppointmentsPage = () => {
   const { appointments, setAppointments } = useAppointments(); // Assuming you have setAppointments for state update
   const [loading, setLoading] = useState(true); // Loading state
+  const { token } = useToken();
 
   useEffect(() => {
     setTimeout(() => {
@@ -17,10 +20,25 @@ const MyAppointmentsPage = () => {
     }, 800);
   });
 
-  const handleCancelAppointment = (DoctorId) => {
-    const updatedAppointments = appointments.filter(
-      (appointment) => appointment.doctor.id !== DoctorId
+  const handleCancelAppointment = async (_id) => {
+    //backend-cancellation :
+    const response = await fetch(
+      `${backendURL}/api/appointments/user/delete-appointment`,
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ appointmentId: _id }),
+      }
     );
+    const { message, updatedAppointments } = await response.json();
+    if (!response.ok) {
+      toast.error(message);
+      return;
+    }
+    toast.success('Appointment has been succefully Deleted');
     setAppointments(updatedAppointments); // Update state with the filtered appointments
   };
 
@@ -35,7 +53,7 @@ const MyAppointmentsPage = () => {
           {loading // Show skeletons while loading
             ? Array.from({ length: 4 }).map((_, index) => (
                 <div
-                  key={index}
+                  key={`skeleton-${index}`}
                   className="border border-gray-200 rounded-lg shadow-lg p-6 flex flex-col lg:flex-row items-start lg:items-center lg:justify-between transition duration-300 bg-white"
                 >
                   <div className="flex items-center gap-5 w-full lg:w-auto flex-col lg:flex-row">
@@ -105,9 +123,7 @@ const MyAppointmentsPage = () => {
                     </button>
                     <button
                       className="w-full px-8 py-2 bg-red-500 text-white rounded-full shadow-lg hover:bg-red-600 transition"
-                      onClick={() =>
-                        handleCancelAppointment(appointment.doctor.id)
-                      }
+                      onClick={() => handleCancelAppointment(appointment._id)}
                     >
                       Cancel Appointment
                     </button>

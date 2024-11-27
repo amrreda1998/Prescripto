@@ -21,12 +21,11 @@ export const AppointmentsProvider = ({ children }) => {
           },
         }
       );
-
+      const { message, allAppointments } = await response.json();
       if (!response.ok) {
-        throw new Error('Error fetching data from the server');
+        throw new Error(message);
       }
 
-      const { allAppointments } = await response.json();
       setAppointments(allAppointments);
     } catch (error) {
       console.error(error.message);

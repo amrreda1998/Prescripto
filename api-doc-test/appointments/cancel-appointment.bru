@@ -1,0 +1,21 @@
+meta {
+  name: cancel-appointment
+  type: http
+  seq: 4
+}
+
+delete {
+  url: http://localhost:4000/api/appointments/user/delete-appointment
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3M2UyYzM5MzMyN2E5MTkyZGVmMDhmNiIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzMyNjUyMTkyfQ.QBudssXmMysl7u7YOkh_fClJ2vEKTdF1qw-C2tlVmak
+}
+
+body:json {
+  
+  {"appointmentId" : "674669680779020c4fa6f244"
+  }
+}
