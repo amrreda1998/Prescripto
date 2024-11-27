@@ -26,7 +26,7 @@ export const userRegister = async (req, res) => {
   if (emailExist) {
     return res
       .status(400)
-      .send({ success: false, message: 'Email Already Existed' });
+      .send({ success: false, message: 'Email is Already Registered' });
   }
 
   //hashing the password
