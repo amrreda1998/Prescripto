@@ -16,13 +16,22 @@ mongoDbConnect();
 configureCloudinary();
 
 // Middlewares
-app.use(
-  cors({
-    origin: '*', // Allow all origins
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    credentials: true, // If you still want to include credentials
-  })
-);
+// app.use(
+//   cors({
+//     origin: '*', // Allow all origins
+//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+//     credentials: true, // If you still want to include credentials
+//   })
+// );
+
+app.use((req, res, next) => {
+  res.header(
+    'Access-Control-Allow-Origin',
+    'https://prescripto-book-doctors.vercel.app'
+  ); // Update with your actual frontend origin
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'); // Allow specific methods
+  next();
+});
 
 app.use(express.json());
 
