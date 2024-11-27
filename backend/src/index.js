@@ -16,16 +16,15 @@ mongoDbConnect();
 configureCloudinary();
 
 //middlewares
-app.use(express.json());
 app.use(
   cors({
-    origin: '*', // Replace with your frontend URL
-    credentials: true, // Allow cookies to be sent
+    origin: 'https://prescripto-book-doctors.vercel.app/',
+    credentials: true,
   })
 );
+app.use(express.json());
 
 //call seed function for doctors data
-
 seedDoctors();
 
 //App APIS
