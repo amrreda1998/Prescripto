@@ -118,7 +118,7 @@ export const adminLogin = async (req, res) => {
   const adminData = await adminModel.findOne({ email });
   if (!adminData) {
     return res
-      .status(404)
+      .status(400)
       .send({ success: false, message: 'invalid email or password' });
   }
   //valdiate the password

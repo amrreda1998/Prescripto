@@ -15,7 +15,7 @@ export const AddAppointment = async (req, res) => {
   const fullAppointmentData = { doctorId, date, time, userId: userId };
 
   //check if this appointment exists in the database before create it :
-  const appointmentExist = await appointmentModel.findOne({doctorId});
+  const appointmentExist = await appointmentModel.findOne({doctorId,userId});
   if (appointmentExist) {
     return res
       .status(400)
@@ -64,8 +64,8 @@ export const getUserAppointments = async (req, res) => {
     const allAppointments = await appointmentModel.find({ userId });
     if (allAppointments.length === 0) {
       return res
-        .status(404)
-        .send({ success: false, message: 'No Appointments Found!' });
+        .status(200)
+        .send({ success: ture, message: 'No Appointments Found!' });
     }
 
     // Wait for all reformatted appointments to complete
@@ -94,7 +94,7 @@ export const deleteAppointment = async (req, res) => {
     });
 
     if (!appointment) {
-      return res.status(404).send({
+      return res.status(400).send({
         success: false,
         message: 'Appointment not found ',
       });

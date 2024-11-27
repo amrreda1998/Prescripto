@@ -118,7 +118,7 @@ export const getUserInfo = async (req, res) => {
     const userData = await userModel.findOne({ _id: userId });
 
     if (!userData) {
-      return res.status(404).send({
+      return res.status(400).send({
         success: false,
         message: 'Error Retrieving user data , user not found',
       });
@@ -151,7 +151,7 @@ export const updateUserInfo = async (req, res) => {
     const userData = await userModel.findOne({ _id: userId });
 
     if (!userData) {
-      return res.status(404).send({
+      return res.status(400).send({
         success: false,
         message: 'Error updating user data, user not found',
       });
@@ -198,7 +198,7 @@ export const uploadProfileImage = async (req, res) => {
     );
 
     if (!updatedUser) {
-      return res.status(404).send({
+      return res.status(400).send({
         success: false,
         message: 'Error uploading image , Can not find user data',
       });

@@ -8,7 +8,7 @@ doctorRouter.get('/', async (req, res) => {
   try {
     const allDoctors = await doctorModel.find();
     if (allDoctors.length === 0) {
-      return res.status(404).send('Doctors Not Found');
+      return res.status(400).send('Doctors Not Found');
     }
     return res.status(200).send({
       success: true,
