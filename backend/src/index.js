@@ -17,7 +17,12 @@ configureCloudinary();
 
 //middlewares
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: 'https://prescripto-book-doctors.vercel.app/', // Replace with your frontend URL
+    credentials: true, // Allow cookies to be sent
+  })
+);
 
 //call seed function for doctors data
 
