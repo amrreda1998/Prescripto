@@ -15,11 +15,11 @@ export const AddAppointment = async (req, res) => {
   const fullAppointmentData = { doctorId, date, time, userId: userId };
 
   //check if this appointment exists in the database before create it :
-  const appointmentExist = await appointmentModel.findOne(fullAppointmentData);
+  const appointmentExist = await appointmentModel.findOne({doctorId});
   if (appointmentExist) {
     return res
       .status(400)
-      .send({ success: false, message: 'Appointment already exist' });
+      .send({ success: false, message: 'You already booked an appointment with same docotor' });
   }
 
   //add the appointment to the database :

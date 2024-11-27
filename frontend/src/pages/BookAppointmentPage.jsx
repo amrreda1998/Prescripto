@@ -88,7 +88,7 @@ const BookAppointmentPage = () => {
         navigate('/myappointments');
       }, 700);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [isAppointmentAdded, navigate]);
 
   const allRelatedDoctors = chosenDoctor
@@ -258,7 +258,7 @@ const BookAppointmentPage = () => {
           )}
         </div>
       </div>
-      <ToastContainer autoClose={500}/>
+      <ToastContainer autoClose={700}/>
     </>
   );
 };
