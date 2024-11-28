@@ -229,7 +229,7 @@ const BookAppointmentPage = () => {
 
         <div className="text-center my-10">
           <button
-            className="bg-[#5F6FFF] shadow-lg hover:shadow-gray-500 p-4 text-white rounded-full"
+            className="bg-[#5F6FFF] shadow-lg hover:shadow-gray-500 p-4 text-white rounded-full min-w-[200px]"
             disabled={!selectedDay || !selectedTime || isLoading} // Disable button if loading
             onClick={handleBookAppointment}
           >

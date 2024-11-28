@@ -126,11 +126,11 @@ const MyAppointmentsPage = () => {
                   </div>
 
                   <div className="mt-5 lg:mt-0 space-y-3 flex flex-col w-full lg:w-auto lg:items-center">
-                    <button className="w-full px-8 py-2 bg-[#5F6FFF] text-white rounded-full shadow-lg hover:bg-[#4b5aff] transition">
+                    <button className="w-full px-8 py-2 bg-[#5F6FFF] text-white rounded-full shadow-lg hover:bg-[#4b5aff] transition min-w-[140px]">
                       Pay Online
                     </button>
                     <button
-                      className="w-full px-8 py-2 bg-red-500 text-white rounded-full shadow-lg hover:bg-red-600 transition"
+                      className="w-full px-8 py-2 bg-red-500 text-white rounded-full shadow-lg hover:bg-red-600 transition min-w-[200px]"
                       onClick={() => handleCancelAppointment(appointment._id)}
                       disabled={loadingAppointments.includes(appointment._id)} // Disable button if loading
                     >
