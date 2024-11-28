@@ -12,7 +12,7 @@ const FindSpecialitySection = () => {
         Simply browse through our extensive list of trusted doctors,
         <br /> schedule your appointment hassle-free.
       </div>
-      <div className="flex flex-wrap justify-center gap-2 md:space-x-5 p-5">
+      <div className="flex flex-wrap justify-center gap-2 md:space-x-3 pt-5">
         {specialityData.map(({ speciality, image }, index) => (
           <NavLink key={index} to={'/alldoctors'} state={{ speciality }}>
             <SpecialityCard imagePath={image} specialityName={speciality} />
