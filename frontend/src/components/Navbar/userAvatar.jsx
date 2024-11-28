@@ -1,16 +1,21 @@
 import { useNavigate } from 'react-router-dom';
 import { useState, useRef, useEffect } from 'react';
 import { useToken } from '../../context/tokenContext';
-import { useUser } from './../../context/userContext';
+import {
+  DefaultUserdataPlaceHolder,
+  useUser,
+} from './../../context/userContext';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { useAppointments } from './../../context/AppointmentsContext';
 
 const UserAvatar = () => {
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [loading, setLoading] = useState(true); // Loading state
   const { setToken } = useToken(); // Token for authorization
-  const { userData } = useUser();
+  const { userData, setUserData } = useUser();
+  const { setAppointments } = useAppointments();
 
   const dropdownRef = useRef(null); // Ref to the dropdown menu
   const avatarRef = useRef(null); // Ref to the avatar image
@@ -108,8 +113,9 @@ const UserAvatar = () => {
               onClick={() => {
                 // Remove the token from local storage
                 localStorage.removeItem('userToken');
-                // Reset the token
-                setToken('');
+                setToken(''); // Reset the token
+                setUserData(DefaultUserdataPlaceHolder); //reset uesr data
+                setAppointments([]); //reset appointments
                 navigate('/login'); // Optionally redirect after logout
               }}
               className="px-4 py-2 hover:bg-gray-200 cursor-pointer"

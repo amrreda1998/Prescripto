@@ -1,21 +1,11 @@
 // TokenProvider.jsx
-import userContext from './userContext.js';
+import userContext, { DefaultUserdataPlaceHolder } from './userContext.js';
 import { useState, useEffect } from 'react';
 import { useToken } from './tokenContext';
 import { backendURL } from './../constants/backendURL';
 
 // eslint-disable-next-line react/prop-types
 export const UserProvider = ({ children }) => {
-  const DefaultUserdataPlaceHolder = {
-    name: 'User',
-    email: 'example@gmail.com',
-    bio: '',
-    image: '',
-    gender: 'Not Selected', // Default gender value
-    address: '',
-    birthdate: '', // Default birthdate value
-    phone: '',
-  };
   const [userData, setUserData] = useState(DefaultUserdataPlaceHolder);
   const { token } = useToken();
 
@@ -42,8 +32,8 @@ export const UserProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if(token){
-      fetchData(); // Fetch user data when the component mounts  
+    if (token) {
+      fetchData(); // Fetch user data when the component mounts
     }
   }, [token]);
 
