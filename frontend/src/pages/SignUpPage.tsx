@@ -35,6 +35,10 @@ const SignUpPage = () => {
       toast.error('Passwords do not match');
       return;
     }
+    if (formData.password.length < 8) {
+      toast.error('Passwords should be at least 8 characters');
+      return;
+    }
 
     try {
       const response = await fetch(`${backendURL}/api/user/register`, {
