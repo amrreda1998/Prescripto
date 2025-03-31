@@ -7,6 +7,7 @@ is a web application designed to simplify the process of booking and managing do
 ## Table of Contents
 
 - [Features](#features)
+- [System Design Diagram](#system-design-diagram)
 - [Installation](#installation)
 - [Usage](#usage)
 - [API Endpoints](#api-endpoints)
@@ -21,6 +22,12 @@ is a web application designed to simplify the process of booking and managing do
 - **User Authentication**: Secure login and registration using JWT authentication.
 - **Appointment Management**: View and manage existing appointments, including the ability to cancel appointments.
 - **Responsive Design**: Mobile-friendly design for usage across various devices.
+
+## System Design Diagram
+
+![diagram](https://github.com/user-attachments/assets/173cfc8e-3b0a-423e-924c-e9120fd00a28)
+
+
 ## Installation
 
 ### Prerequisites
