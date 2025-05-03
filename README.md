@@ -7,6 +7,7 @@ is a web application designed to simplify the process of booking and managing do
 ## Table of Contents
 
 - [Features](#features)
+- [System Details By DeepWiki](#system-details-by-deepwiki)
 - [System Design Diagram](#system-design-diagram)
 - [Installation](#installation)
 - [Usage](#usage)
@@ -22,6 +23,13 @@ is a web application designed to simplify the process of booking and managing do
 - **User Authentication**: Secure login and registration using JWT authentication.
 - **Appointment Management**: View and manage existing appointments, including the ability to cancel appointments.
 - **Responsive Design**: Mobile-friendly design for usage across various devices.
+
+## System Details by DeepWiki
+  if you want a detailed graph based overview of the system check [https://deepwiki.com/amrreda1998/Prescripto]
+  This document provides a comprehensive overview of the Prescripto application, a healthcare appointment booking system that allows users to search for      doctors by specialty, book appointments, and manage their personal information. This page introduces the high-level architecture and explains how the 
+  primary components interact with each other.
+
+
 
 ## System Design Diagram
 
